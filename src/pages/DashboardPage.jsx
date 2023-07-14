@@ -36,7 +36,7 @@ export default function DashboardPage() {
                     </div>
 
                     {/* Body dashboard */}
-                    <div className='mt-12 grid grid-cols-3 gap-6'>
+                    <div className='my-12 grid grid-cols-3 gap-6'>
 
                         <div className="rounded-xl bg-gradient-to-r from-brand-red to-[#FF694F] shadow-md border">
                             <div className="flex justify-between items-center">

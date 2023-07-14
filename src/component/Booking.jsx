@@ -1,4 +1,4 @@
-import {React,useState,useEffect} from 'react'
+import { React, useState, useEffect } from 'react'
 import MaterialTable from 'material-table'
 import axios from 'axios';
 import { forwardRef } from 'react';
@@ -22,108 +22,88 @@ import GetAppIcon from '@material-ui/icons/GetApp';
 
 
 const tableIcons = {
-Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
-Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
-Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
-DetailPanel: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
-Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
-Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
-Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
-FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
-LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
-NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
-PreviousPage: forwardRef((props, ref) => <ChevronLeft {...props} ref={ref} />),
-ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
-SortArrow: forwardRef((props, ref) => <ArrowUpward {...props} ref={ref} />),
-ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
-ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
+  Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
+  Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
+  Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
+  Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
+  DetailPanel: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
+  Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
+  Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
+  Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
+  FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
+  LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
+  NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
+  PreviousPage: forwardRef((props, ref) => <ChevronLeft {...props} ref={ref} />),
+  ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
+  Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
+  SortArrow: forwardRef((props, ref) => <ArrowUpward {...props} ref={ref} />),
+  ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
+  ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
 };
 
 const Booking = () => {
   const options = {
-    headers: {"Access-Control-Allow-Headers": "Content-Type" }
-}
-    const columns = [{title:'Room',field:'room'},{title:'Customer',field:'customer'},{title:'Telephone',field:'telephone'},{title:'Start',field:'start'},{title:'End',field:'end'},{title:'ID Card',field:'id_card'}]
+    headers: { "Access-Control-Allow-Headers": "Content-Type" }
+  }
+  const columns = [{ title: 'ID', field: 'id' }, { title: 'Name', field: 'name' }, { title: 'Telephone', field: 'money' }]
 
-    useEffect (()=>{
-        Table() 
-    },[])
-    const [ListBookings,setListBooking]=useState([]);
-    const endpoint = 'http://127.0.0.1:3001/api/Bookings'
-    const Table = () => {
-        axios.get(endpoint).then((Response)=>{
-            var data1 = Response.data
-            var data = [];
-            if(data1){
-            data1.map((object,item)=>{
-                data.push({room:object.room_no,customer:object.customer_name,telephone:object.telephone,start:object.start_date,end:object.end_date,id_card:object.id_card,id:object.id});
-            })
-            }
-            setListBooking(data);
-        })
-    }
-    return ( 
-        <MaterialTable columns={columns}
-  title="Booking List"
-  icons={tableIcons}
-  data={ListBookings}
-  editable={{
-    onRowAdd: (newRow) => new Promise((resolve, reject) => {
-        axios.post(endpoint,newRow,options).then(function (response) {
-            console.log(response)
-            Table()
-          })
-      setTimeout(() => resolve(), 500)
-
-    }),
-    onRowUpdate: (newRow, oldRow) => new Promise((resolve, reject) => {
-      axios.put(endpoint,newRow).then(function (response) {
-        console.log(response)
-
-        Table()
-      })
-      setTimeout(() => resolve(), 500)
-    }),
-    onRowDelete: (selectedRow) => new Promise((resolve, reject) => {
-        axios.delete(endpoint,{data:selectedRow}).then(function (response) {
-            Table()
-          })
-      setTimeout(() => resolve(), 1000)
+  useEffect(() => {
+    Table()
+  }, [])
+  const [listCustomers, setListCustomers] = useState([]);
+  const endpoint = 'http://127.0.0.1:3001/api/Bookings'
+  const Table = () => {
+    axios.get(`http://localhost:8080/api/v1/user`).then((res) => {
+      console.log(res.data.payload)
+      setListCustomers(res.data.payload);
     })
-  }}
- actions={[
-          {
-            icon: () => <GetAppIcon />,
-            tooltip: "Add to Room",
-            onClick: (e, data) => {
-                axios.put(endpoint,{transfer:true,data:data}).then(function (response) {
-                console.log(response)
+  }
 
-                    Table()
-                  })
-            } 
-            // isFreeAction:true
-          }
-        ]}
-        onSelectionChange={(selectedRows) => console.log(selectedRows)}
-        options={{
-          paging: false,
-          sorting: true, search: true,
-          paginationType: "stepped", showFirstLastPageButtons: false, paginationPosition: "both", exportButton: true,
-          exportAllData: true, exportFileName: "TableData", addRowPosition: "first", actionsColumnIndex: -1, selection: true,
-          showSelectAllCheckbox: false, showTextRowsSelected: true, selectionProps: rowData => ({
-            color:"primary"
-          }),
-          grouping: true, columnsButton: true,
-          rowStyle: (data, index) => index % 2 === 0 ? { background: "#f5f5f5" } : null,
-          headerStyle: { background: "#f44336",color:"#fff"}
-        }}
+  return (
+    <MaterialTable columns={columns}
+      title="Booking List"
+      icons={tableIcons}
+      data={listCustomers}
+      editable={{
+        onRowAdd: (newRow) => new Promise((resolve, reject) => {
+          axios.post(`http://localhost:8080/api/v1/user`, newRow, options).then(function (response) {
+            console.log("response ::::::::::::;" , response)
+            Table()
+          })
+          setTimeout(() => resolve(), 500)
 
-/>
-    )
+        }),
+        onRowUpdate: (newRow, oldRow) => new Promise((resolve, reject) => {
+          axios.put(endpoint, newRow).then(function (response) {
+            console.log(response)
+
+            Table()
+          })
+          setTimeout(() => resolve(), 500)
+        }),
+        onRowDelete: (selectedRow) => new Promise((resolve, reject) => {
+          axios.delete(endpoint, { data: selectedRow }).then(function (response) {
+            Table()
+          })
+          setTimeout(() => resolve(), 1000)
+        })
+      }}
+      onSelectionChange={(selectedRows) => console.log(selectedRows)}
+      options={{
+        paging: false,
+        sorting: true, search: true,
+        paginationType: "stepped", showFirstLastPageButtons: false, paginationPosition: "both", exportButton: true,
+        exportAllData: true, exportFileName: "TableData", addRowPosition: "first", actionsColumnIndex: -1, selection: true,
+        showSelectAllCheckbox: false, showTextRowsSelected: true, selectionProps: rowData => ({
+          color: "primary"
+        }),
+        grouping: true, columnsButton: true,
+        rowStyle: (data, index) => index % 2 === 0 ? { background: "#f5f5f5" } : null,
+        headerStyle: { background: "#f44336", color: "#fff" }
+      }}
+
+    />
+  )
 }
 
 export default Booking
- 
