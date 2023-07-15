@@ -67,8 +67,9 @@ const Booking = () => {
       editable={{
         onRowAdd: (newRow) => new Promise((resolve, reject) => {
           axios.post(`http://localhost:8080/api/v1/user`, newRow, options).then(function (response) {
-            console.log("response ::::::::::::;" , response)
             Table()
+          }).catch((e) => {
+            console.log(e)
           })
           setTimeout(() => resolve(), 500)
 

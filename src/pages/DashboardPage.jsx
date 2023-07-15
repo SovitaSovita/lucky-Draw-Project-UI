@@ -7,15 +7,14 @@ import FolderCopyOutlinedIcon from '@mui/icons-material/FolderCopyOutlined';
 
 import SideBar from '../component/SideBar'
 import { Button } from 'react-daisyui'
-import Booking from '../component/Booking';
 
 export default function DashboardPage() {
     return (
         <>
             <SideBar />
 
-            <div class="p-6 pl-3 sm:ml-64">
-                <div class="p-4 border-2 border-gray-200 h-screen border-dashed rounded-lg dark:border-gray-700">
+            <div className="p-6 pl-3 sm:ml-64">
+                <div className="p-4 border-2 border-gray-200 h-screen border-dashed rounded-lg dark:border-gray-700">
                     {/* navbar head */}
                     <div className='flex justify-between px-4'>
                         <div>
@@ -152,8 +151,6 @@ export default function DashboardPage() {
                             </tbody>
                         </table>
                     </div> */}
-
-                    <Booking />
                 </div>
             </div>
         </>
