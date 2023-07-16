@@ -19,6 +19,7 @@ import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 import AddIcon from '@material-ui/icons/Add';
 import GetAppIcon from '@material-ui/icons/GetApp';
+import { add_list, delete_list, get_list, update_list } from '../redux/service/TableListService';
 
 
 const tableIcons = {
@@ -41,7 +42,7 @@ const tableIcons = {
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
 };
 
-const Booking = () => {
+const TableList = () => {
   const options = {
     headers: { "Access-Control-Allow-Headers": "Content-Type" }
   }
@@ -51,39 +52,42 @@ const Booking = () => {
     Table()
   }, [])
   const [listCustomers, setListCustomers] = useState([]);
-  const endpoint = 'http://127.0.0.1:3001/api/Bookings'
+
   const Table = () => {
-    axios.get(`http://localhost:8080/api/v1/user`).then((res) => {
-      console.log(res.data.payload)
+    get_list().then((res) => {
       setListCustomers(res.data.payload);
+    }).catch((e) => {
+      console.log(e)
     })
   }
 
   return (
     <MaterialTable columns={columns}
-      title="Booking List"
+      title="Customers List"
       icons={tableIcons}
       data={listCustomers}
       editable={{
+
+        // add function
         onRowAdd: (newRow) => new Promise((resolve, reject) => {
-          axios.post(`http://localhost:8080/api/v1/user`, newRow, options).then(function (response) {
+          add_list(newRow, options).then(function (response) {
             Table()
-          }).catch((e) => {
-            console.log(e)
           })
           setTimeout(() => resolve(), 500)
 
         }),
+
+        // update function
         onRowUpdate: (newRow, oldRow) => new Promise((resolve, reject) => {
-          axios.put(endpoint, newRow).then(function (response) {
-            console.log(response)
-
+          update_list(newRow, oldRow).then(() => {
             Table()
           })
           setTimeout(() => resolve(), 500)
         }),
+
+        // delete function
         onRowDelete: (selectedRow) => new Promise((resolve, reject) => {
-          axios.delete(endpoint, { data: selectedRow }).then(function (response) {
+          delete_list(selectedRow).then(() => {
             Table()
           })
           setTimeout(() => resolve(), 1000)
@@ -100,11 +104,11 @@ const Booking = () => {
         }),
         grouping: true, columnsButton: true,
         rowStyle: (data, index) => index % 2 === 0 ? { background: "#f5f5f5" } : null,
-        headerStyle: { background: "#f44336", color: "#fff" }
+        headerStyle: { background: "#f44336", color: "#fff"}
       }}
 
     />
   )
 }
 
-export default Booking
+export default TableList

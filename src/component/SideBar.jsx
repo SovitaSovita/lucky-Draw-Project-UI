@@ -6,43 +6,14 @@ import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
 import ChecklistOutlinedIcon from '@mui/icons-material/ChecklistOutlined';
 import EmojiEventsOutlinedIcon from '@mui/icons-material/EmojiEventsOutlined';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
+import { Link, useLocation } from 'react-router-dom';
 
 export default function SideBar() {
+
+    const location = useLocation()
+    const currentPath = location.pathname;
+
     return (
-        // <div className='col-span-1'>
-        //     <div className='h-screen w-full p-6 font-poppin'>
-        //         <div className='bg-smoke-black w-full h-full rounded-xl px-4'>
-
-        //             {/* head sidebar */}
-        //             <div className='border-b border-gray-500 py-8'>
-        //                 <p className='text-white text-xl text-center'>Klassy watches</p>
-        //             </div>
-
-
-        //             {/* main sidebar */}
-        //             <nav className='mt-6'>
-        //                 <ul className='text-white text-sm list-none'>
-        //                     <li className='flex items-center bg-brand-red rounded-lg px-4 py-3 mb-1 transition-all'>
-        //                         <DashboardOutlinedIcon className='mr-2' />
-        //                         <span>Dashboard</span>
-        //                     </li>
-        //                     <li className='flex items-center hover:bg-gray-hover rounded-lg px-4 py-3 mb-1 transition-all'>
-        //                         <ChecklistOutlinedIcon className='mr-2' />
-        //                         <span>View list</span>
-        //                     </li>
-        //                     <li className='flex items-center hover:bg-gray-hover rounded-lg px-4 py-3 mb-1 transition-all'>
-        //                         <EmojiEventsOutlinedIcon className='mr-2' />
-        //                         <span>Winner</span>
-        //                     </li>
-        //                     <li className='flex items-center hover:bg-gray-hover rounded-lg px-4 py-3 transition-all'>
-        //                         <PersonOutlineOutlinedIcon className='mr-2' />
-        //                         <span>Account</span>
-        //                     </li>
-        //                 </ul>
-        //             </nav>
-        //         </div>
-        //     </div>
-        // </div>
         <div>
 
             <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar" type="button" class="inline-flex items-center p-2 mt-2 ml-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
@@ -66,22 +37,38 @@ export default function SideBar() {
                         {/* main sidebar */}
                         <nav className='mt-6'>
                             <ul className='text-white text-sm list-none'>
-                                <li className='flex items-center bg-brand-red rounded-lg px-4 py-3 mb-1 transition-all'>
-                                    <DashboardOutlinedIcon className='mr-2' />
-                                    <span>Dashboard</span>
-                                </li>
-                                <li className='flex items-center hover:bg-gray-hover rounded-lg px-4 py-3 mb-1 transition-all'>
-                                    <ChecklistOutlinedIcon className='mr-2' />
-                                    <span>View list</span>
-                                </li>
-                                <li className='flex items-center hover:bg-gray-hover rounded-lg px-4 py-3 mb-1 transition-all'>
-                                    <EmojiEventsOutlinedIcon className='mr-2' />
-                                    <span>Winner</span>
-                                </li>
-                                <li className='flex items-center hover:bg-gray-hover rounded-lg px-4 py-3 transition-all'>
-                                    <PersonOutlineOutlinedIcon className='mr-2' />
-                                    <span>Account</span>
-                                </li>
+                                <Link to={'/dashboard'}>
+                                    <li className={currentPath == '/dashboard'
+                                        ? 'flex items-center bg-brand-red rounded-lg px-4 py-3 mb-1 transition-all'
+                                        : 'flex items-center rounded-lg px-4 py-3 mb-1 transition-all'}>
+                                        <DashboardOutlinedIcon className='mr-2' />
+                                        <span>Dashboard</span>
+                                    </li>
+                                </Link>
+                                <Link to={'/dashboard/manage'}>
+                                    <li className={currentPath == '/dashboard/manage'
+                                        ? 'flex items-center bg-brand-red rounded-lg px-4 py-3 mb-1 transition-all'
+                                        : 'flex items-center rounded-lg px-4 py-3 mb-1 transition-all'}>
+                                        <ChecklistOutlinedIcon className='mr-2' />
+                                        <span>Manage list</span>
+                                    </li>
+                                </Link>
+                                <Link to={'/dashboard/winner'} >
+                                    <li className={currentPath == '/dashboard/winner'
+                                        ? 'flex items-center bg-brand-red rounded-lg px-4 py-3 mb-1 transition-all'
+                                        : 'flex items-center rounded-lg px-4 py-3 mb-1 transition-all'}>
+                                        <EmojiEventsOutlinedIcon className='mr-2' />
+                                        <span>Winner</span>
+                                    </li>
+                                </Link>
+                                <Link to={'/dashboard/account'} >
+                                    <li className={currentPath == '/dashboard/account'
+                                        ? 'flex items-center bg-brand-red rounded-lg px-4 py-3 mb-1 transition-all'
+                                        : 'flex items-center rounded-lg px-4 py-3 mb-1 transition-all'}>
+                                        <PersonOutlineOutlinedIcon className='mr-2' />
+                                        <span>Account</span>
+                                    </li>
+                                </Link>
                             </ul>
                         </nav>
                     </div>
