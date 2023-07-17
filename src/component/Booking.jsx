@@ -51,15 +51,18 @@ const Booking = () => {
         Table() 
     },[])
     const [ListBookings,setListBooking]=useState([]);
-    const endpoint = 'http://127.0.0.1:3001/api/Bookings'
+    // const endpoint = 'http://127.0.0.1:3001/api/Bookings'
+    const endpoint = 'https://jsonplaceholder.typicode.com/posts'
     const Table = () => {
         axios.get(endpoint).then((Response)=>{
             var data1 = Response.data
             var data = [];
             if(data1){
-            data1.map((object,item)=>{
+            data1.length > 1 ? (
+              data1.map((object,item)=>{
                 data.push({room:object.room_no,customer:object.customer_name,telephone:object.telephone,start:object.start_date,end:object.end_date,id_card:object.id_card,id:object.id});
             })
+            ): <div>hi</div>
             }
             setListBooking(data);
         })
