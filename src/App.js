@@ -3,27 +3,22 @@ import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import RandomPicker from './component/RandomPicker';
 import DashboardPage from './pages/DashboardPage';
+import Test from './component/Test';
 
 function App() {
-  
+
   const namesList = [
-    'Marcelo',
-    'Lizzette',
-    'Pauline',
-    'Fumiko',
-    'Tomasa',
-    'Bertha',
-    'Antoinette',
-    'Tianna',
-    'Ammie',
-    'Victorina',
-    'Marlon',
-    'Jules',
-    'Arletha',
-    'Ellyn',
-    'Karol',
-    'Corrin',
-    'Josephine'
+    'Sak',
+    'Hito',
+    'Chenghav',
+    'Sokreach',
+    'Leyley',
+    'Miko',
+    'Anjing',
+    'Sreytoch',
+    'Rady',
+    'RadySava',
+    'BekNgang'
   ];
 
 
@@ -31,6 +26,7 @@ function App() {
     <div className="">
       <Routes>
         <Route path="/" element={<DashboardPage />} />
+        <Route path="/test" element={<Test />} />
         <Route path="random-pick" element={<RandomPicker items={namesList} />} />
       </Routes>
     </div>

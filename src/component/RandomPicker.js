@@ -1,14 +1,15 @@
-import React, { useState, useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
+import React, { useRef, useState } from "react";
+import PropTypes from "prop-types";
+import CropFreeOutlinedIcon from "@mui/icons-material/CropFreeOutlined";
+import ZoomInMapOutlinedIcon from "@mui/icons-material/ZoomInMapOutlined";
 
 function RandomPicker({ items }) {
   const [isRunning, setIsRunning] = useState(false);
-  const [isStop, setIsStop] = useState(false);
-  const [currentChoice, setCurrentChoice] = useState('');
-
-  let interval = null;
+  const [currentChoice, setCurrentChoice] = useState("");
+  const [isFullScreen, setIsFullScreen] = useState(false);
   const intervalDuration = 25;
-  const duration = 5000;
+  const duration = 3500;
+  let interval = null;
 
   const isRunningRef = useRef(false);
 
@@ -24,7 +25,6 @@ function RandomPicker({ items }) {
     }, duration);
   };
 
-
   const stop = () => {
     clearInterval(interval);
     setIsRunning(false);
@@ -33,7 +33,7 @@ function RandomPicker({ items }) {
   const reset = () => {
     clearInterval(interval);
     setIsRunning(false);
-    setCurrentChoice('');
+    setCurrentChoice("");
   };
 
   const pickChoice = () => {
@@ -45,71 +45,150 @@ function RandomPicker({ items }) {
     setCurrentChoice(pickChoice());
   };
 
-  useEffect(() => {
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
+  const choiceContent = currentChoice.trim().length > 0 ? currentChoice : "?";
+
+  const zoomOut = () => {
+    const button = document.querySelector(".fullscreen-button");
+    setIsFullScreen(true);
+    if (button) {
+      if (button.requestFullscreen) {
+        button.requestFullscreen();
+      } else if (button.mozRequestFullScreen) {
+        button.mozRequestFullScreen();
+      } else if (button.webkitRequestFullscreen) {
+        button.webkitRequestFullscreen();
+      } else if (button.msRequestFullscreen) {
+        button.msRequestFullscreen();
+      }
+    }
+  };
+
+  const zoomIn = () => {
+    const exitFullscreen =
+      document.exitFullscreen ||
+      document.mozCancelFullScreen ||
+      document.webkitExitFullscreen ||
+      document.msExitFullscreen;
+
+    if (exitFullscreen) {
+      exitFullscreen.call(document);
+    }
+
+    setIsFullScreen(false);
+  };
 
   return (
-    <div className="RandomPicker">
-      <RandomPickerChoice choice={currentChoice} />
-      <RandomPickerControls
-        isRunning={isRunning}
-        hasChoice={currentChoice.trim()?.length > 0}
-        start={start}
-        stop={() =>stop()}
-        reset={reset}
-      />
+    <div
+      className={
+        isFullScreen
+          ? "RandomPicker fullscreen-button"
+          : "RandomPicker fullscreen-button"
+      }
+      style={{ backgroundColor: isFullScreen ? "#FF422E" : "" }}
+    >
+      {/* Zoom */}
+      <div className=" text-white text-sm absolute top-0 right-0 mt-4 mr-4">
+        {!isFullScreen ? (
+          <button onClick={zoomOut}>
+            <CropFreeOutlinedIcon className="mr-2" />
+          </button>
+        ) : (
+          <button onClick={zoomIn}>
+            <ZoomInMapOutlinedIcon className="mr-2" />
+          </button>
+        )}
+      </div>
+
+      {/* Luckydraw text */}
+      <div className="">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          xmlnsXlink="http://www.w3.org/1999/xlink"
+          width="739px"
+          height="137px"
+        >
+          <text
+            kerning="auto"
+            fontFamily="Myriad Pro"
+            strokeWidth="16px"
+            stroke="rgb(244, 183, 30)"
+            fillOpacity="0"
+            strokeOpacity="1"
+            fontSize="10px"
+            x="6px"
+            y="75.072px"
+          >
+            <tspan
+              fontSize="80px"
+              fontFamily="Angkor Sovann Fantasy_02"
+              fill="#FFFFFF"
+            >
+              Lucky Draw
+            </tspan>
+          </text>
+          <text
+            kerning="auto"
+            fontFamily="Myriad Pro"
+            fill="rgb(0, 0, 0)"
+            fontSize="10px"
+            x="6px"
+            y="75.072px"
+          >
+            <tspan
+              fontSize="80px"
+              fontFamily="Angkor Sovann Fantasy_02"
+              fill="#FFFFFF"
+            >
+              Lucky Draw
+            </tspan>
+          </text>
+        </svg>
+      </div>
+
+      {/* Display Winner */}
+      <div
+        style={{ boxShadow: "8px 8px 0px rgba(0, 8, 0, 0.4)" }}
+        className="relative bg-[#FFBF1F] mb-8 rounded-xl w-[740px] h-[160px] flex justify-center items-center"
+      >
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="border-dotted border-[10px] border-white rounded-xl w-[720px] h-[140px]">
+            <div className=" rounded-xl w-full h-full"></div>
+          </div>
+        </div>
+        <div className="flex RandomPicker__choice bg-white w-[690px] h-[110px] rounded-md text-center justify-center items-center text-black">
+          <span className="RandomPicker__choiceItem text-[43px]">
+            {choiceContent}
+          </span>
+        </div>
+      </div>
+
+      {/* Button Draw */}
+      <div className="RandomPicker__controls">
+        {!isRunning ? (
+          <button
+            style={{
+              visibility: isRunning ? "invisible" : "visible",
+              boxShadow: "8px 8px 0px rgba(0, 8, 0, 0.4)",
+            }}
+            className="text-white mt-4 py-3 px-[140px] bg-[#FFBF1F] hover:bg-[#FFCA28] rounded-lg text-[24px]"
+            onClick={start}
+          >
+            {isRunning ? null : "Draw"}
+          </button>
+        ) : null}
+      </div>
+
+      {/* Copyright */}
+      <div className="text-white text-sm absolute bottom-2 mt-4 mr-4">
+        © Klassy Watches・
+      </div>
     </div>
   );
 }
 
 RandomPicker.propTypes = {
   items: PropTypes.array,
-  duration: PropTypes.number
-};
-
-function RandomPickerChoice({ choice }) {
-  const content = choice.trim()?.length > 0 ? choice : '?';
-
-  return (
-    <div className="RandomPicker__choice">
-      <span className="RandomPicker__choiceItem">{content}</span>
-    </div>
-  );
-}
-
-RandomPickerChoice.propTypes = {
-  choice: PropTypes.string
-};
-
-function RandomPickerControls({ isRunning, hasChoice, start, stop, reset }) {
-  return (
-    <div className="RandomPicker__controls">
-      <button
-        className={`RandomPicker__button ${isRunning && 'RandomPicker__button--stop'}`}
-        onClick={isRunning ? stop : start}
-      >
-        {isRunning ? 'stop' : 'start'}
-      </button>
-      <button
-        disabled={isRunning || !hasChoice}
-        className="RandomPicker__button RandomPicker__button--reset"
-        onClick={reset}
-      >
-        reset
-      </button>
-    </div>
-  );
-}
-
-RandomPickerControls.propTypes = {
-  isRunning: PropTypes.bool,
-  hasChoice: PropTypes.bool,
-  start: PropTypes.func,
-  stop: PropTypes.func,
-  reset: PropTypes.func
+  duration: PropTypes.number,
 };
 
 export default RandomPicker;

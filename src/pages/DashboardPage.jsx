@@ -11,7 +11,7 @@ import Booking from '../component/Booking';
 
 export default function DashboardPage() {
     return (
-        <>
+        <div className='bg-white'>
             <SideBar />
 
             <div class="p-6 pl-3 sm:ml-64">
@@ -156,6 +156,6 @@ export default function DashboardPage() {
                     <Booking />
                 </div>
             </div>
-        </>
+        </div>
     )
 }
