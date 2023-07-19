@@ -1,7 +1,10 @@
 import React from 'react'
+import RandomPicker from '../component/RandomPicker'
 
 export default function FontEndPage() {
   return (
-    <div align="center">FontEndPage</div>
+    <div>
+      <RandomPicker />
+    </div>
   )
 }

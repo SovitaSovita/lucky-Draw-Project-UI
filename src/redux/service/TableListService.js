@@ -1,8 +1,8 @@
-import { API } from "../Constants"
+import { API, API_HEADER } from "../Constants"
 
 export const get_list = async () => {
     try {
-        const response = await API.get(`/api/v1/user`)
+        const response = await API_HEADER.get(`/api/v1/info/getting-customer-information`)
         return response
     }
     catch(e){
@@ -11,7 +11,7 @@ export const get_list = async () => {
 }
 export const add_list = async (newRow, options) => {
     try {
-        const response = await API.post(`/api/v1/user`, newRow, options)
+        const response = await API_HEADER.post(`/api/v1/user`, newRow, options)
         return response
     }
     catch(e){
@@ -20,16 +20,16 @@ export const add_list = async (newRow, options) => {
 }
 export const update_list = async (newRow, oldRow) => {
     try {
-        const response = await API.put(`/api/v1/update-user/${oldRow.id}`, newRow)
+        const response = await API_HEADER.put(`/api/v1/update-user/${oldRow.id}`, newRow)
         return response
     }
     catch(e){
         console.log(e)
     }
 }
-export const delete_list = async (selectedRow) => {
+export const delete_list = async (orderNo) => {
     try {
-        const response = await API.delete(`/api/v1/removeUser/${selectedRow.id}`, { data: selectedRow })
+        const response = await API_HEADER.delete(`/api/v1/info/delete-customer-imformation/${orderNo}`)
         return response
     }
     catch(e){

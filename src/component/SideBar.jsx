@@ -14,7 +14,7 @@ export default function SideBar() {
     const currentPath = location.pathname;
 
     return (
-        <div>
+        <div className='font-poppin'>
 
             <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar" type="button" class="inline-flex items-center p-2 mt-2 ml-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
                 <span class="sr-only">Open sidebar</span>
@@ -25,7 +25,7 @@ export default function SideBar() {
 
             <aside id="logo-sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
 
-                <div className='h-screen w-full p-6 font-poppin'>
+                <div className='h-screen w-full p-6'>
                     <div className='bg-smoke-black w-full h-full rounded-xl px-4'>
 
                         {/* head sidebar */}
@@ -37,32 +37,32 @@ export default function SideBar() {
                         {/* main sidebar */}
                         <nav className='mt-6'>
                             <ul className='text-white text-sm list-none'>
-                                <Link to={'/dashboard'}>
-                                    <li className={currentPath == '/dashboard'
+                                <Link to={'/'}>
+                                    <li className={currentPath == '/'
                                         ? 'flex items-center bg-brand-red rounded-lg px-4 py-3 mb-1 transition-all'
                                         : 'flex items-center rounded-lg px-4 py-3 mb-1 transition-all'}>
                                         <DashboardOutlinedIcon className='mr-2' />
                                         <span>Dashboard</span>
                                     </li>
                                 </Link>
-                                <Link to={'/dashboard/manage'}>
-                                    <li className={currentPath == '/dashboard/manage'
+                                <Link to={'/manage'}>
+                                    <li className={currentPath == '/manage'
                                         ? 'flex items-center bg-brand-red rounded-lg px-4 py-3 mb-1 transition-all'
                                         : 'flex items-center rounded-lg px-4 py-3 mb-1 transition-all'}>
                                         <ChecklistOutlinedIcon className='mr-2' />
                                         <span>Manage list</span>
                                     </li>
                                 </Link>
-                                <Link to={'/dashboard/winner'} >
-                                    <li className={currentPath == '/dashboard/winner'
+                                <Link to={'/winner'} >
+                                    <li className={currentPath == '/winner'
                                         ? 'flex items-center bg-brand-red rounded-lg px-4 py-3 mb-1 transition-all'
                                         : 'flex items-center rounded-lg px-4 py-3 mb-1 transition-all'}>
                                         <EmojiEventsOutlinedIcon className='mr-2' />
                                         <span>Winner</span>
                                     </li>
                                 </Link>
-                                <Link to={'/dashboard/account'} >
-                                    <li className={currentPath == '/dashboard/account'
+                                <Link to={'/account'} >
+                                    <li className={currentPath == '/account'
                                         ? 'flex items-center bg-brand-red rounded-lg px-4 py-3 mb-1 transition-all'
                                         : 'flex items-center rounded-lg px-4 py-3 mb-1 transition-all'}>
                                         <PersonOutlineOutlinedIcon className='mr-2' />

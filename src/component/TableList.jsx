@@ -46,7 +46,13 @@ const TableList = () => {
   const options = {
     headers: { "Access-Control-Allow-Headers": "Content-Type" }
   }
-  const columns = [{ title: 'ID', field: 'id' }, { title: 'Name', field: 'name' }, { title: 'Telephone', field: 'money' }]
+  const columns = [
+    { title: 'No', field: 'No' },
+    { title: 'Order Date', field: 'dateOfOrder' },
+    { title: 'Name', field: 'name' },
+    { title: 'Telephone', field: 'phoneNumber' },
+    { title: 'OrderNo', field: 'orderNo' },
+  ]
 
   useEffect(() => {
     Table()
@@ -55,6 +61,7 @@ const TableList = () => {
 
   const Table = () => {
     get_list().then((res) => {
+      console.log("res ::: " ,res)
       setListCustomers(res.data.payload);
     }).catch((e) => {
       console.log(e)
@@ -87,7 +94,7 @@ const TableList = () => {
 
         // delete function
         onRowDelete: (selectedRow) => new Promise((resolve, reject) => {
-          delete_list(selectedRow).then(() => {
+          delete_list(selectedRow.No).then(() => {
             Table()
           })
           setTimeout(() => resolve(), 1000)
