@@ -2,7 +2,6 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
-import RandomPicker from './component/RandomPicker';
 import DashboardPage from './pages/DashboardPage';
 import ManageListPage from './pages/ManageListPage';
 import Layout from './pages/Layout';

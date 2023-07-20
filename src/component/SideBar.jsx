@@ -1,5 +1,5 @@
 import React from 'react'
-import '../assets/css/style.css'
+import logo from '../assets/img/logo2.png'
 
 
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
@@ -30,7 +30,8 @@ export default function SideBar() {
 
                         {/* head sidebar */}
                         <div className='border-b border-gray-500 py-8'>
-                            <p className='text-white text-xl text-center'>Klassy watches</p>
+                            <p className='text-white text-xl text-center'>Lucky Draw</p>
+                            {/* <img src={logo} alt='logo' /> */}
                         </div>
 
 

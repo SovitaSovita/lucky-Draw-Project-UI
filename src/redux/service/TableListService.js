@@ -11,16 +11,16 @@ export const get_list = async () => {
 }
 export const add_list = async (newRow, options) => {
     try {
-        const response = await API_HEADER.post(`/api/v1/user`, newRow, options)
+        const response = await API_HEADER.post(`/api/v1/info/customer-information`, newRow, options)
         return response
     }
     catch(e){
         console.log(e)
     }
 }
-export const update_list = async (newRow, oldRow) => {
+export const update_list = async (updateRow, oldRow) => {
     try {
-        const response = await API_HEADER.put(`/api/v1/update-user/${oldRow.id}`, newRow)
+        const response = await API_HEADER.put(`/api/v1/info/update-customer-imformation/${oldRow.No}`, updateRow)
         return response
     }
     catch(e){
