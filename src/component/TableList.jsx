@@ -72,7 +72,7 @@ const TableList = () => {
 
   const Table = () => {
     get_list().then((res) => {
-      const convertedData = res.data.payload.map(item => {
+      const convertedData = res.data?.payload?.map(item => {
         // Convert the timestamp to a JavaScript Date object
         const dateObject = new Date(item.dateOfOrder);
         const formattedDate = dateObject.toLocaleString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
@@ -84,7 +84,7 @@ const TableList = () => {
         };
       });
       setListCustomers(convertedData);
-      dispatch(setListData(res.data.payload))
+      dispatch(setListData(res.data?.payload))
     }).catch((e) => {
       console.log(e)
     })

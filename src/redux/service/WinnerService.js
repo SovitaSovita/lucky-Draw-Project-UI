@@ -9,3 +9,14 @@ export const get_winner = async () => {
         console.log(e)
     }
 }
+
+
+export const reset_winner = async () => {
+    try{
+        const response = await API_HEADER.delete(`/api/v1/info/reset-winner`)
+        return response
+        
+    }catch(e){
+        console.log(e)
+    }
+}

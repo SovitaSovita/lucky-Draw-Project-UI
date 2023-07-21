@@ -47,3 +47,23 @@ export const upload_excel = async (formData) => {
         console.log(e)
     }
 }
+
+export const insert_winner = async (formData) => {
+    try {
+        const response = await API_HEADER.post(`/api/v1/info/insert-winner-information`, formData)
+        return response
+    }
+    catch (e){
+        console.log(e)
+    }
+}
+
+export const reset_customer = async () => {
+    try {
+        const response = await API_HEADER.delete(`/api/v1/info/reset-customer-imformation`)
+        return response
+    }
+    catch (e){
+        console.log(e)
+    }
+}

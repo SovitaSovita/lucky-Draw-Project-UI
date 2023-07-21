@@ -3,12 +3,14 @@ import PropTypes from "prop-types";
 import CropFreeOutlinedIcon from "@mui/icons-material/CropFreeOutlined";
 import ZoomInMapOutlinedIcon from "@mui/icons-material/ZoomInMapOutlined";
 import { useSelector } from "react-redux";
-import { get_list } from "../redux/service/TableListService";
+import { get_list, insert_winner } from "../redux/service/TableListService";
+import { notifyError } from "../redux/Constants";
 
 function RandomPicker() {
   const [isRunning, setIsRunning] = useState(false);
   const [currentChoice, setCurrentChoice] = useState("");
   const [isFullScreen, setIsFullScreen] = useState(false);
+  const [storeWinner,setStoreWinner] = useState([])
   const intervalDuration = 25;
   const duration = 3500;
   let interval = null;
@@ -18,7 +20,7 @@ function RandomPicker() {
   useEffect(() => {
     get_list().then((res) => {
       const nameList = res.data.payload.map((data) => {
-         return data.name
+         return data
       })
       setItems(nameList)
     })
@@ -26,14 +28,31 @@ function RandomPicker() {
 
   const isRunningRef = useRef(false);
 
-  const start = () => {
+  const start = (newItems) => {
     clearInterval(interval);
     interval = setInterval(setChoice, intervalDuration);
     setIsRunning(true);
     isRunningRef.current = true;
     setTimeout(() => {
       if (isRunningRef.current) {
-        stop();
+        const choice = newItems[Math.floor(Math.random() * newItems?.length)];
+        setCurrentChoice(choice.name)
+        let formWinnerInfo = {
+          randomCustomer: choice.name,
+          phoneNumber: choice.phoneNumber,
+          dateOfOrder: choice.dateOfOrder,
+          orderNo: choice.orderNo
+        }
+
+        insert_winner(formWinnerInfo).then(()=>{
+          get_list().then((res) => {
+            console.log("da: ",res)
+            setItems(res.data.payload)
+          stop();
+
+        })
+        
+        })
       }
     }, duration);
   };
@@ -51,44 +70,44 @@ function RandomPicker() {
 
   const pickChoice = () => {
     const choice = items[Math.floor(Math.random() * items?.length)];
-    return choice;
+    return choice.name;
   };
 
   const setChoice = () => {
     setCurrentChoice(pickChoice());
   };
 
-  const choiceContent = currentChoice.trim().length > 0 ? currentChoice : "?";
+  const choiceContent = currentChoice?.trim().length > 0 ? currentChoice : "?";
 
-  const zoomOut = () => {
-    const button = document.querySelector(".fullscreen-button");
-    setIsFullScreen(true);
-    if (button) {
-      if (button.requestFullscreen) {
-        button.requestFullscreen();
-      } else if (button.mozRequestFullScreen) {
-        button.mozRequestFullScreen();
-      } else if (button.webkitRequestFullscreen) {
-        button.webkitRequestFullscreen();
-      } else if (button.msRequestFullscreen) {
-        button.msRequestFullscreen();
-      }
-    }
-  };
+  // const zoomOut = () => {
+  //   const button = document.querySelector(".fullscreen-button");
+  //   setIsFullScreen(true);
+  //   if (button) {
+  //     if (button.requestFullscreen) {
+  //       button.requestFullscreen();
+  //     } else if (button.mozRequestFullScreen) {
+  //       button.mozRequestFullScreen();
+  //     } else if (button.webkitRequestFullscreen) {
+  //       button.webkitRequestFullscreen();
+  //     } else if (button.msRequestFullscreen) {
+  //       button.msRequestFullscreen();
+  //     }
+  //   }
+  // };
 
-  const zoomIn = () => {
-    const exitFullscreen =
-      document.exitFullscreen ||
-      document.mozCancelFullScreen ||
-      document.webkitExitFullscreen ||
-      document.msExitFullscreen;
+  // const zoomIn = () => {
+  //   const exitFullscreen =
+  //     document.exitFullscreen ||
+  //     document.mozCancelFullScreen ||
+  //     document.webkitExitFullscreen ||
+  //     document.msExitFullscreen;
 
-    if (exitFullscreen) {
-      exitFullscreen.call(document);
-    }
+  //   if (exitFullscreen) {
+  //     exitFullscreen.call(document);
+  //   }
 
-    setIsFullScreen(false);
-  };
+  //   setIsFullScreen(false);
+  // };
 
   return (
     <div className="main-font-end">
@@ -101,7 +120,7 @@ function RandomPicker() {
         style={{ backgroundColor: isFullScreen ? "#FF422E" : "" }}
       >
         {/* Zoom */}
-        <div className=" text-white text-sm absolute top-0 right-0 mt-4 mr-4">
+        {/* <div className=" text-white text-sm absolute top-0 right-0 mt-4 mr-4">
           {!isFullScreen ? (
             <button onClick={zoomOut}>
               <CropFreeOutlinedIcon className="mr-2" />
@@ -111,7 +130,7 @@ function RandomPicker() {
               <ZoomInMapOutlinedIcon className="mr-2" />
             </button>
           )}
-        </div>
+        </div> */}
 
         {/* Luckydraw text */}
         <div className="">
@@ -185,7 +204,7 @@ function RandomPicker() {
                 boxShadow: "8px 8px 0px rgba(0, 8, 0, 0.4)",
               }}
               className="text-white mt-4 py-3 px-[140px] bg-[#FFBF1F] hover:bg-[#FFCA28] rounded-lg text-[24px]"
-              onClick={start}
+              onClick={items.length <=0 ? notifyError("No data") : ()=>{start(items)}}
             >
               {isRunning ? null : "Draw"}
             </button>

@@ -16,3 +16,6 @@ export const API = axios.create({
 export const notifySuccess = (e) => {
     toast.success(e);
 }
+export const notifyError = (e) => {
+    toast.error(e);
+}

@@ -1,41 +1,40 @@
-import React, { useEffect, useState } from "react";
-import Navbar from "../component/Navbar";
-import WinnerCard from "../component/WinnerCard";
-import { get_winner, reset_winner } from "../redux/service/WinnerService";
-import { Button } from "flowbite-react";
-import { notifySuccess } from "../redux/Constants";
+import { reset_customer } from '../redux/service/TableListService';
+import React, {useState } from "react";
+import { notifySuccess } from '../redux/Constants';
+import { useDispatch } from 'react-redux';
+import { setListData } from '../redux/slice/ListSlice';
 
-export default function Winner() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [winnerList, setWinnerList] = useState([]);
-  useEffect(() => {
-    get_winner().then((res) => {
-      setWinnerList(res.data?.payload);
-    });
-  }, []);
 
-  const resetWinner = () => {
-    reset_winner().then((r) => {
-      setWinnerList([])
-      notifySuccess("reset winner Successfully.")
-      toggleModal();
-    });
-  };
-  const toggleModal = () => {
-    setIsOpen(!isOpen);
-  };
-  const handleCancelDelete = () => {
-    toggleModal();
-    setTimeout(() => {
-  }, 500)
-  };
+
+
+export default function RemoveCustomer() {
+    const [isOpen, setIsOpen] = useState(false);
+    const [listCustomers, setListCustomers] = useState([]);
+    const dispatch = useDispatch()
+   
+    const toggleModal = () => {
+        setIsOpen(!isOpen);
+    
+    };
+    const handleCancelDelete = () => {
+        toggleModal();
+        setTimeout(() => {
+      }, 500)
+      };
+
+    const handleReset = () => {
+        reset_customer().then((r) => {
+            dispatch(setListData([]))
+            notifySuccess("reset customer Successfully.")
+            toggleModal();
+          });
+    }
+
+
+
   return (
-    <>
-      <div className="p-6 pl-3 sm:ml-64">
-        <div className="p-4 border-2 border-gray-200 min-h-screen border-dashed rounded-lg ">
-          <Navbar />
-          {/* winner */}
-          <div className="flex justify-end mr-5">
+    <div>
+        
             <button
               data-modal-target="popup-modal"
               data-modal-toggle="popup-modal"
@@ -43,7 +42,7 @@ export default function Winner() {
               type="button"
               onClick={toggleModal}
             >
-              Reset Winner
+              Reset customer
             </button>
             {isOpen && (
               <div
@@ -98,7 +97,7 @@ export default function Winner() {
                         data-modal-hide="popup-modal"
                         type="button"
                         className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2"
-                        onClick={resetWinner}
+                        onClick={handleReset}
                       >
                         Yes, I'm sure
                       </button>
@@ -115,17 +114,6 @@ export default function Winner() {
                 </div>
               </div>
             )}
-          </div>
-
-          <div className="pl-8 pr-4">
-            <ol className="relative border-l border-gray-200 dark:border-gray-700 mt-5">
-              {winnerList.map((item, index) => (
-                <WinnerCard items={item} key={index} order={index + 1} />
-              ))}
-            </ol>
-          </div>
-        </div>
-      </div>
-    </>
-  );
+    </div>
+  )
 }

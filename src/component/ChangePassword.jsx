@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+
 import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 import { setLoading } from "../redux/slice/LoadingSlice";
 import LoadingComponentBtn from "./LoadingComponent";
 import { resetPassword } from "../redux/service/AuthService";
 import { setPopup } from "../redux/slice/PopupSlice";
+import AlertMesages from "./AlertMesages";
+import { notifyError, notifySuccess } from "../redux/Constants";
 
 export default function ChangePassword() {
   const [password, setPassword] = useState({});
@@ -26,28 +27,10 @@ export default function ChangePassword() {
       console.log("mydata", e);
       dispatch(setPopup(""));
       if (e.data?.status == true) {
-        toast.success("Successfully Change Password", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        notifySuccess("Changed Successfully.")
         dispatch(setLoading(false));
       } else {
-        toast.error("Your Current Password is Not Correct", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        notifyError("Current password is incorrect.")
         dispatch(setLoading(false));
       }
     });
@@ -146,20 +129,7 @@ export default function ChangePassword() {
           </Form>
         )}
       </Formik>
-
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        limit={1}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
+      {/* <AlertMesages /> */}
     </div>
   );
 }
