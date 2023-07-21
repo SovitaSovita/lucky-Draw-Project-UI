@@ -90,38 +90,32 @@ const TableList = () => {
     })
   }
 
-  const [selectedFile, setSelectedFile] = useState(null);
-
   const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
-  };
-
-  const handleFileUpload = () => {
-    if (!selectedFile) {
-      alert('Please select a file before uploading.');
-      return;
-    }
+    const fileExcel = event.target.files[0]
 
     const formData = new FormData();
-    formData.append('file', selectedFile);
+    formData.append('fileExcel', fileExcel);
 
-    // Replace 'your-api-endpoint' with the actual endpoint to which you want to upload the file
-    // Replace 'your-access-token' with the actual authentication token
-    axios
-      .post('http://localhost:8080/api/v1/info/file-upload', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzb3ZpdGEyOCIsImV4cCI6MTY5MDUwNDE0MCwiaWF0IjoxNjg5ODk5MzQwfQ.qGZG1FV3aTQotSvFBhekePXw4qP0tUlYmm5ufo3_Nl7DncN13r8y8NmMEQY9O7i0LzK5GvIPM8NWoiFBsrbVqA`, // Include the token in the 'Authorization' header
-        },
-      })
-      .then((response) => {
-        // Handle the response data from the API if needed
-        console.log('File upload successful:', response.data);
-      })
+    upload_excel(formData).then((response) => {
+      Table()
+      notifySuccess(response.data.message);
+    })
       .catch((error) => {
         // Handle errors if any
         console.error('Error uploading file:', error);
       });
+  };
+
+  const handleFileUpload = () => {
+    // if (!selectedFile) {
+    //   alert('Please select a file before uploading.');
+    //   return;
+    // }
+
+    const fileInput = document.querySelector('input[name="fileExcel"]');
+    fileInput.click();
+
+
   };
 
   return (
@@ -129,8 +123,9 @@ const TableList = () => {
       <AlertMesages />
       <input
         type="file"
-        // style={{ display: 'none' }}
+        style={{ display: 'none' }}
         onChange={handleFileChange}
+        name="fileExcel"
       />
       <MaterialTable
         columns={columns}

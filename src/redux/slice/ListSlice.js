@@ -9,7 +9,7 @@ export const ListSlice = createSlice({
     initialState,
     reducers : {
         setListData : (state, action) => {
-            console.log("action.payload", action.payload)
+        // console.log("action.payload", action.payload)
            state.listData = action.payload
         }
     }

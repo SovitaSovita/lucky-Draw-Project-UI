@@ -1,5 +1,5 @@
 import React from 'react'
-import logo from '../assets/img/logo2.png'
+import logo from '../assets/img/Artboard_3_2_213b1bea-2b74-4aab-86a5-1bfb64acc4a5_100x@2x.avif'
 
 
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
@@ -26,21 +26,21 @@ export default function SideBar() {
             <aside id="logo-sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
 
                 <div className='h-screen w-full p-6'>
-                    <div className='bg-smoke-black w-full h-full rounded-xl px-4'>
+                    <div className='bg-white shadow border w-full h-full rounded-xl px-4'>
 
                         {/* head sidebar */}
-                        <div className='border-b border-gray-500 py-8'>
-                            <p className='text-white text-xl text-center'>Lucky Draw</p>
-                            {/* <img src={logo} alt='logo' /> */}
+                        <div className='border-b border-gray-500 py-8 px-6'>
+                            {/* <p className='text-white text-xl text-center'>Lucky Draw</p> */}
+                            <img src={logo} alt='logo' className=''/>
                         </div>
 
 
                         {/* main sidebar */}
                         <nav className='mt-6'>
-                            <ul className='text-white text-sm list-none'>
+                            <ul className='text-sm list-none'>
                                 <Link to={'/'}>
                                     <li className={currentPath == '/'
-                                        ? 'flex items-center bg-brand-red rounded-lg px-4 py-3 mb-1 transition-all'
+                                        ? 'flex items-center bg-brand-red text-white rounded-lg px-4 py-3 mb-1 transition-all'
                                         : 'flex items-center rounded-lg px-4 py-3 mb-1 transition-all'}>
                                         <DashboardOutlinedIcon className='mr-2' />
                                         <span>Dashboard</span>
@@ -48,7 +48,7 @@ export default function SideBar() {
                                 </Link>
                                 <Link to={'/manage'}>
                                     <li className={currentPath == '/manage'
-                                        ? 'flex items-center bg-brand-red rounded-lg px-4 py-3 mb-1 transition-all'
+                                        ? 'flex items-center bg-brand-red text-white rounded-lg px-4 py-3 mb-1 transition-all'
                                         : 'flex items-center rounded-lg px-4 py-3 mb-1 transition-all'}>
                                         <ChecklistOutlinedIcon className='mr-2' />
                                         <span>Manage list</span>
@@ -56,7 +56,7 @@ export default function SideBar() {
                                 </Link>
                                 <Link to={'/winner'} >
                                     <li className={currentPath == '/winner'
-                                        ? 'flex items-center bg-brand-red rounded-lg px-4 py-3 mb-1 transition-all'
+                                        ? 'flex items-center bg-brand-red text-white rounded-lg px-4 py-3 mb-1 transition-all'
                                         : 'flex items-center rounded-lg px-4 py-3 mb-1 transition-all'}>
                                         <EmojiEventsOutlinedIcon className='mr-2' />
                                         <span>Winner</span>
@@ -64,7 +64,7 @@ export default function SideBar() {
                                 </Link>
                                 <Link to={'/account'} >
                                     <li className={currentPath == '/account'
-                                        ? 'flex items-center bg-brand-red rounded-lg px-4 py-3 mb-1 transition-all'
+                                        ? 'flex items-center bg-brand-red text-white rounded-lg px-4 py-3 mb-1 transition-all'
                                         : 'flex items-center rounded-lg px-4 py-3 mb-1 transition-all'}>
                                         <PersonOutlineOutlinedIcon className='mr-2' />
                                         <span>Account</span>
