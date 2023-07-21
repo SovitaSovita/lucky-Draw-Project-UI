@@ -91,7 +91,7 @@ export default function RemoveCustomer() {
                       </svg>
                       <h3 className="mb-5 text-lg font-normal text-text_normal ">
                         Are you sure you want to reset all{" "}
-                        <span className="font-bold">winner?</span>
+                        <span className="font-bold">Customers?</span>
                       </h3>
                       <button
                         data-modal-hide="popup-modal"
