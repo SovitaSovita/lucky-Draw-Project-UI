@@ -1,8 +1,9 @@
-import { React, useState, useEffect } from 'react'
+import { React, useState, useEffect, useRef } from 'react'
 import MaterialTable, { MTablePagination, MTableToolbar } from 'material-table'
 import axios from 'axios';
 import { forwardRef } from 'react';
 import '../style/style.css'
+import XLSX from 'xlsx';
 
 
 import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
@@ -22,9 +23,11 @@ import NoteAddOutlinedIcon from '@mui/icons-material/NoteAddOutlined';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 
-import { add_list, delete_list, get_list, update_list } from '../redux/service/TableListService';
-import { notifySuccess } from '../redux/Constants';
+import { add_list, delete_list, get_list, update_list, upload_excel } from '../redux/service/TableListService';
+import { API_HEADER, notifySuccess } from '../redux/Constants';
 import AlertMesages from './AlertMesages';
+import { useDispatch } from 'react-redux';
+import { setListData } from '../redux/slice/ListSlice';
 
 
 const tableIcons = {
@@ -64,6 +67,7 @@ const TableList = () => {
     Table()
   }, [])
   const [listCustomers, setListCustomers] = useState([]);
+  const dispatch = useDispatch()
 
 
   const Table = () => {
@@ -80,14 +84,54 @@ const TableList = () => {
         };
       });
       setListCustomers(convertedData);
+      dispatch(setListData(res.data.payload))
     }).catch((e) => {
       console.log(e)
     })
   }
 
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  const handleFileChange = (event) => {
+    setSelectedFile(event.target.files[0]);
+  };
+
+  const handleFileUpload = () => {
+    if (!selectedFile) {
+      alert('Please select a file before uploading.');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('file', selectedFile);
+
+    // Replace 'your-api-endpoint' with the actual endpoint to which you want to upload the file
+    // Replace 'your-access-token' with the actual authentication token
+    axios
+      .post('http://localhost:8080/api/v1/info/file-upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzb3ZpdGEyOCIsImV4cCI6MTY5MDUwNDE0MCwiaWF0IjoxNjg5ODk5MzQwfQ.qGZG1FV3aTQotSvFBhekePXw4qP0tUlYmm5ufo3_Nl7DncN13r8y8NmMEQY9O7i0LzK5GvIPM8NWoiFBsrbVqA`, // Include the token in the 'Authorization' header
+        },
+      })
+      .then((response) => {
+        // Handle the response data from the API if needed
+        console.log('File upload successful:', response.data);
+      })
+      .catch((error) => {
+        // Handle errors if any
+        console.error('Error uploading file:', error);
+      });
+  };
+
   return (
     <>
       <AlertMesages />
+      <input
+        type="file"
+        // style={{ display: 'none' }}
+        onChange={handleFileChange}
+      />
       <MaterialTable
         columns={columns}
         title={null}
@@ -156,7 +200,7 @@ const TableList = () => {
             icon: NoteAddOutlinedIcon,
             tooltip: 'Import excel',
             isFreeAction: true,
-            onClick: (event) => alert("You want to add a new row")
+            onClick: handleFileUpload
           }
         ]}
 
