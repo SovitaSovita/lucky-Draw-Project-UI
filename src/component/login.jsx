@@ -34,7 +34,7 @@ export default function Login() {
       console.log("DATA", r);
       if(r.status === 200){
         dispatch(setLoading(false));
-        navigate("/home");
+        navigate("/");
       }else{
         dispatch(setLoading(false));
         setFieldError("username", "username not exist");

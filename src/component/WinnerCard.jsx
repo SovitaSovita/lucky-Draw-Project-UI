@@ -1,11 +1,12 @@
 import React from 'react'
 
-export default function WinnerCard({num}) {
+export default function WinnerCard({items, order}) {
+
     return (
         <li className="mb-10 ml-10">
             {/* count winner */}
             <span className="absolute flex items-center justify-center font-bold w-10 h-10 bg-blue-300 text-blue-800 rounded-full -left-5 ring-4 ring-white">
-                {num}
+                {order}
             </span>
             {/* winner each card */}
             <div className="items-center justify-between p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:flex dark:bg-gray-700 dark:border-gray-600">
@@ -15,8 +16,8 @@ export default function WinnerCard({num}) {
                     </div>
 
                     <div className="font-medium dark:text-white">
-                        <div>Jese Leos</div>
-                        <div className="text-sm text-gray-500 dark:text-gray-400">Telephone : 093438188</div>
+                        <div>{items.name}</div>
+                        <div className="text-sm text-gray-500 dark:text-gray-400">Telephone : {items.phoneNumber}</div>
                     </div>
                 </div>
             </div>

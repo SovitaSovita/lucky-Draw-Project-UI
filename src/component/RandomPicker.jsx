@@ -1,7 +1,9 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import CropFreeOutlinedIcon from "@mui/icons-material/CropFreeOutlined";
 import ZoomInMapOutlinedIcon from "@mui/icons-material/ZoomInMapOutlined";
+import { useSelector } from "react-redux";
+import { get_list } from "../redux/service/TableListService";
 
 function RandomPicker() {
   const [isRunning, setIsRunning] = useState(false);
@@ -11,19 +13,16 @@ function RandomPicker() {
   const duration = 3500;
   let interval = null;
 
-  const items = [
-    'Sak',
-    'Hito',
-    'Chenghav',
-    'Sokreach',
-    'Leyley',
-    'Miko',
-    'Anjing',
-    'Sreytoch',
-    'Rady',
-    'RadySava',
-    'BekNgang'
-  ];
+  const [items, setItems] = useState([])
+
+  useEffect(() => {
+    get_list().then((res) => {
+      const nameList = res.data.payload.map((data) => {
+         return data.name
+      })
+      setItems(nameList)
+    })
+  }, [])
 
   const isRunningRef = useRef(false);
 

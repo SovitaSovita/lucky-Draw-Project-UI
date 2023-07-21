@@ -5,7 +5,7 @@ import FolderCopyOutlinedIcon from '@mui/icons-material/FolderCopyOutlined';
 
 export default function DashboardCard() {
     return (
-        <div className='grid grid-cols-3 gap-6'>
+        <div className='grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 lg:gap-6 md:gap-4 sm:gap-2'>
             <div className="rounded-xl bg-gradient-to-r from-brand-red to-[#FF694F] shadow-md border">
                 <div className="flex justify-between items-center">
                     <div className='py-4 px-6 text-base-100'>
