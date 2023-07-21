@@ -56,7 +56,7 @@ const TableList = () => {
     headers: { "Access-Control-Allow-Headers": "Content-Type" }
   }
   const columns = [
-    { title: 'No', field: 'No', editable: 'never' },
+    { title: 'No', field: 'No', editable: 'never', render: rowData => rowData.tableData.id + 1},
     { title: 'Order Date', field: 'dateOfOrder', type: 'date' },
     { title: 'Name', field: 'name' },
     { title: 'Telephone', field: 'phoneNumber' },
