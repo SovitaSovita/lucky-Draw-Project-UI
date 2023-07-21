@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../component/Navbar";
 import WinnerCard from "../component/WinnerCard";
 import { get_winner, reset_winner } from "../redux/service/WinnerService";
-import { Button } from "flowbite-react";
 import { notifySuccess } from "../redux/Constants";
 
 export default function Winner() {
@@ -10,7 +9,7 @@ export default function Winner() {
   const [winnerList, setWinnerList] = useState([]);
   useEffect(() => {
     get_winner().then((res) => {
-      setWinnerList(res.data?.payload);
+      setWinnerList(res?.data?.payload);
     });
   }, []);
 
@@ -119,7 +118,7 @@ export default function Winner() {
 
           <div className="pl-8 pr-4">
             <ol className="relative border-l border-gray-200 dark:border-gray-700 mt-5">
-              {winnerList.map((item, index) => (
+              {winnerList?.map((item, index) => (
                 <WinnerCard items={item} key={index} order={index + 1} />
               ))}
             </ol>

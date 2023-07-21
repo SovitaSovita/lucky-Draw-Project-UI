@@ -16,8 +16,8 @@ export default function WinnerCard({items, order}) {
                     </div>
 
                     <div className="font-medium dark:text-white">
-                        <div>{items.name}</div>
-                        <div className="text-sm text-gray-500 dark:text-gray-400">Telephone : {items.phoneNumber}</div>
+                        <div>{items?.name}</div>
+                        <div className="text-sm text-gray-500 dark:text-gray-400">Telephone : {items?.phoneNumber}</div>
                     </div>
                 </div>
             </div>
