@@ -37,7 +37,7 @@ export default function Winner() {
           {/* winner */}
           <div className="flex justify-end mr-5">
             {
-              winnerList.length <= 0 ? (null) : (
+              winnerList?.length <= 0 ? (null) : (
                 <button
                   data-modal-target="popup-modal"
                   data-modal-toggle="popup-modal"
@@ -124,7 +124,7 @@ export default function Winner() {
           <div className="pl-8 pr-4">
             <ol className="relative border-l border-gray-200 mt-5">
               {
-                winnerList.length <= 0 ? (
+                winnerList?.length <= 0 ? (
                   <div className="flex justify-center items-center h-full">
                     <div className="flex flex-col items-center justify-center">
                       <img src={noData} alt="no_data" className="w-44" />
