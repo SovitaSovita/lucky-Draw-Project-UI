@@ -166,7 +166,7 @@ const TableList = () => {
 
           // delete function
           onRowDelete: (selectedRow) => new Promise((resolve, reject) => {
-            delete_list(selectedRow?.No).then((res) => {
+            delete_list(selectedRow?.no).then((res) => {
               if (res?.status == 200) {
                 notifySuccess("Deleted Successfully.")
               }

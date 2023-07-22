@@ -21,7 +21,7 @@ export const add_list = async (newRow, options) => {
 }
 export const update_list = async (updateRow, oldRow) => {
     try {
-        const response = await API_HEADER.put(`/api/v1/info/update-customer-imformation/${oldRow.No}`, updateRow)
+        const response = await API_HEADER.put(`/api/v1/info/update-customer-imformation/${oldRow.no}`, updateRow)
         return response
     }
     catch (e) {
