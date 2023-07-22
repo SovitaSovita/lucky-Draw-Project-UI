@@ -10,18 +10,31 @@ export default function DashboardCard() {
     const [winnerList, setWinnerList] = useState([]);
     const [customerList, setListCustomers]= useState([])
     useEffect(() => {
-        get_winner().then((res) => {
-          setWinnerList(res.data?.payload);
-        });
+        get_winner()
+          .then((res) => {
+            if (res.data?.payload) {
+              setWinnerList(res.data.payload);
+            }
+          })
+          .catch((error) => {
+            console.error("Error fetching winner data:", error);
+          });
       }, []);
-    
+      
       const winnerListCount = winnerList.length;
-
+      
       useEffect(() => {
-        get_list().then((res) => {
-          setListCustomers(res.data?.payload);
-        });
+        get_list()
+          .then((res) => {
+            if (res.data?.payload) {
+              setListCustomers(res.data.payload);
+            }
+          })
+          .catch((error) => {
+            console.error("Error fetching customer list:", error);
+          });
       }, []);
+      
 
       
     const customerListCount = customerList.length;

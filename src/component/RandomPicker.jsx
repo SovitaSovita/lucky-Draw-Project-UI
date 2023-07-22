@@ -9,6 +9,8 @@ import { notifyError } from "../redux/Constants";
 function RandomPicker() {
   const [isRunning, setIsRunning] = useState(false);
   const [currentChoice, setCurrentChoice] = useState("");
+  const [winnerName, setWinnerName] = useState("");
+  const [isWinner,setIsWinner] = useState(false)
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [storeWinner,setStoreWinner] = useState([])
   const intervalDuration = 25;
@@ -18,38 +20,45 @@ function RandomPicker() {
   const [items, setItems] = useState([])
 
   useEffect(() => {
-    get_list().then((res) => {
-      const nameList = res.data.payload.map((data) => {
-         return data
+    get_list()
+      .then((res) => {
+        if (res.data && res.data.payload) {
+          const nameList = res.data.payload.map((data) => {
+            return data;
+          });
+          setItems(nameList);
+        }
       })
-      setItems(nameList)
-    })
-  }, [])
+      .catch((error) => {
+        console.error("Error fetching list data:", error);
+      });
+  }, []);
+  
 
   const isRunningRef = useRef(false);
 
   const start = (newItems) => {
+
     clearInterval(interval);
+    setIsWinner(false);
     interval = setInterval(setChoice, intervalDuration);
     setIsRunning(true);
     isRunningRef.current = true;
     setTimeout(() => {
       if (isRunningRef.current) {
         const choice = newItems[Math.floor(Math.random() * newItems?.length)];
-        setCurrentChoice(choice.name)
         let formWinnerInfo = {
           randomCustomer: choice.name,
           phoneNumber: choice.phoneNumber,
           dateOfOrder: choice.dateOfOrder,
           orderNo: choice.orderNo
         }
-
+        setIsWinner(true)
+        setWinnerName(choice.name)
         insert_winner(formWinnerInfo).then(()=>{
           get_list().then((res) => {
-            console.log("da: ",res)
             setItems(res.data.payload)
           stop();
-
         })
         
         })
@@ -190,7 +199,7 @@ function RandomPicker() {
           </div>
           <div className="flex RandomPicker__choice bg-white w-[690px] h-[110px] rounded-md text-center justify-center items-center text-black">
             <span className="RandomPicker__choiceItem text-[43px]">
-              {choiceContent}
+              {isWinner? winnerName : choiceContent}
             </span>
           </div>
         </div>
