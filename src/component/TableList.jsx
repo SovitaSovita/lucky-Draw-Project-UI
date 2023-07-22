@@ -72,7 +72,7 @@ const TableList = () => {
 
   const Table = () => {
     get_list().then((res) => {
-      const convertedData = res.data?.payload?.map(item => {
+      const convertedData = res?.data?.payload?.map(item => {
         // Convert the timestamp to a JavaScript Date object
         const dateObject = new Date(item.dateOfOrder);
         const formattedDate = dateObject.toLocaleString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
@@ -84,7 +84,7 @@ const TableList = () => {
         };
       });
       setListCustomers(convertedData);
-      dispatch(setListData(res.data?.payload))
+      dispatch(setListData(res?.data?.payload))
     }).catch((e) => {
       console.log(e)
     })
@@ -98,7 +98,7 @@ const TableList = () => {
 
     upload_excel(formData).then((response) => {
       Table()
-      notifySuccess(response.data.message);
+      notifySuccess(response?.data?.message);
     })
       .catch((error) => {
         // Handle errors if any
@@ -137,7 +137,7 @@ const TableList = () => {
           // add function
           onRowAdd: (newRow) => new Promise((resolve, reject) => {
             add_list(newRow, options).then((res) => {
-              if (res.status == 200) {
+              if (res?.status == 200) {
                 notifySuccess("Inserted Successfully.")
               }
               Table()
@@ -156,7 +156,7 @@ const TableList = () => {
             }
 
             update_list(newUpdateRow, oldRow).then((res) => {
-              if (res.status == 200) {
+              if (res?.status == 200) {
                 notifySuccess("Updated Successfully.")
               }
               Table()
@@ -166,8 +166,8 @@ const TableList = () => {
 
           // delete function
           onRowDelete: (selectedRow) => new Promise((resolve, reject) => {
-            delete_list(selectedRow.No).then((res) => {
-              if (res.status == 200) {
+            delete_list(selectedRow?.No).then((res) => {
+              if (res?.status == 200) {
                 notifySuccess("Deleted Successfully.")
               }
               Table()

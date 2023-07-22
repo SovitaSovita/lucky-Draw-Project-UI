@@ -59,7 +59,7 @@ export default function DashboardCard() {
                 <div className="flex justify-between items-center">
                     <div className='py-4 px-6 text-base-100'>
                         <h2 className="card-title uppercase">Winner</h2>
-                        <span>{winnerListCount} people</span>
+                        <span>{winnerListCount > 1 ? (winnerListCount + ' customers') : ('0'+winnerListCount + ' customer')}</span>
                     </div>
                     <div>
                         <EmojiEventsOutlinedIcon sx={{ fontSize: 100 }} className='opacity-20 rotate-12' />
@@ -75,7 +75,7 @@ export default function DashboardCard() {
                 <div className="flex justify-between items-center">
                     <div className='py-4 px-6 text-base-100'>
                         <h2 className="card-title uppercase">Totally Customer</h2>
-                        <span>{customerListCount} customers</span>
+                        <span>{customerListCount > 1 ? (customerListCount + ' customers') : ('0'+customerListCount + ' customer')}</span>
                     </div>
                     <div>
                         <FolderCopyOutlinedIcon sx={{ fontSize: 100 }} className='opacity-20 rotate-12' />

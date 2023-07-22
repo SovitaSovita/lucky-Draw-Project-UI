@@ -13,8 +13,8 @@ export default function SideBar() {
   const navigate = useNavigate()
   const location = useLocation();
   const currentPath = location.pathname;
-  const logout = () =>{
-    localStorage.removeItem('Token');
+  const logout = () => {
+    localStorage.removeItem('token');
     navigate("/login")
   }
 
@@ -50,22 +50,21 @@ export default function SideBar() {
         aria-label="Sidebar"
       >
         <div className="h-screen w-full p-6">
-          <div className="bg-white shadow border w-full h-full rounded-xl px-4">
-            {/* head sidebar */}
-            <div className="border-b border-gray-500 py-8 px-6">
-              {/* <p className='text-white text-xl text-center'>Lucky Draw</p> */}
-              <img src={logo} alt="logo" className="" />
-            </div>
-
+          <div className="bg-white flex flex-col justify-between shadow border w-full h-full rounded-xl px-4">
             {/* main sidebar */}
-            <nav className="mt-6">
-              <ul className="text-sm list-none">
+            <nav>
+              {/* head sidebar */}
+              <div className="border-b border-gray-500 py-8 px-6">
+                {/* <p className='text-white text-xl text-center'>Lucky Draw</p> */}
+                <img src={logo} alt="logo" className="" />
+              </div>
+              <ul className="text-sm list-none mt-5">
                 <Link to={"/"}>
                   <li
                     className={
                       currentPath == "/"
-                        ? "flex items-center bg-brand-red text-white rounded-lg px-4 py-3 mb-1 transition-all"
-                        : "flex items-center rounded-lg px-4 py-3 mb-1 transition-all"
+                        ? "flex items-center bg-brand-red hover:bg-red-700 text-white rounded-lg px-4 py-3 mb-1 transition-all"
+                        : "flex items-center rounded-lg px-4 py-3 mb-1 hover:bg-white-smoke transition-all"
                     }
                   >
                     <DashboardOutlinedIcon className="mr-2" />
@@ -76,8 +75,8 @@ export default function SideBar() {
                   <li
                     className={
                       currentPath == "/manage"
-                        ? "flex items-center bg-brand-red text-white rounded-lg px-4 py-3 mb-1 transition-all"
-                        : "flex items-center rounded-lg px-4 py-3 mb-1 transition-all"
+                        ? "flex items-center bg-brand-red hover:bg-red-700 text-white rounded-lg px-4 py-3 mb-1 transition-all"
+                        : "flex items-center rounded-lg px-4 py-3 mb-1 hover:bg-white-smoke transition-all"
                     }
                   >
                     <ChecklistOutlinedIcon className="mr-2" />
@@ -88,8 +87,8 @@ export default function SideBar() {
                   <li
                     className={
                       currentPath == "/winner"
-                        ? "flex items-center bg-brand-red text-white rounded-lg px-4 py-3 mb-1 transition-all"
-                        : "flex items-center rounded-lg px-4 py-3 mb-1 transition-all"
+                        ? "flex items-center bg-brand-red hover:bg-red-700 text-white rounded-lg px-4 py-3 mb-1 transition-all"
+                        : "flex items-center rounded-lg px-4 py-3 mb-1 hover:bg-white-smoke transition-all"
                     }
                   >
                     <EmojiEventsOutlinedIcon className="mr-2" />
@@ -100,25 +99,23 @@ export default function SideBar() {
                   <li
                     className={
                       currentPath == "/account"
-                        ? "flex items-center bg-brand-red text-white rounded-lg px-4 py-3 mb-1 transition-all"
-                        : "flex items-center rounded-lg px-4 py-3 mb-1 transition-all"
+                        ? "flex items-center bg-brand-red hover:bg-red-700 text-white rounded-lg px-4 py-3 mb-1 transition-all"
+                        : "flex items-center rounded-lg px-4 py-3 mb-1 hover:bg-white-smoke transition-all"
                     }
                   >
                     <PersonOutlineOutlinedIcon className="mr-2" />
                     <span>Account</span>
                   </li>
                 </Link>
-                <button
-                  className={
-                   "flex items-center rounded-lg px-4 py-3 mb-1 transition-all"
-                  }
-                  onClick={logout}
-                >
-                  <ExitToAppOutlinedIcon  className="mr-2" />
-                  <span>Log out</span>
-                </button>
               </ul>
             </nav>
+            <button
+              className="flex items-center justify-center mb-4 bg-red-100 w-full rounded-lg self-center px-4 py-1.5 hover:bg-red-200 transition-all"
+              onClick={logout}
+            >
+              <ExitToAppOutlinedIcon className="mr-2 text-red-600" />
+              <span className="text-red-600">Log out</span>
+            </button>
           </div>
         </div>
       </aside>

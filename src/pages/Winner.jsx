@@ -3,6 +3,7 @@ import Navbar from "../component/Navbar";
 import WinnerCard from "../component/WinnerCard";
 import { get_winner, reset_winner } from "../redux/service/WinnerService";
 import { notifySuccess } from "../redux/Constants";
+import noData from '../assets/img/undraw_No_data_re_kwbl.png'
 
 export default function Winner() {
   const [isOpen, setIsOpen] = useState(false);
@@ -26,7 +27,7 @@ export default function Winner() {
   const handleCancelDelete = () => {
     toggleModal();
     setTimeout(() => {
-  }, 500)
+    }, 500)
   };
   return (
     <>
@@ -35,15 +36,19 @@ export default function Winner() {
           <Navbar />
           {/* winner */}
           <div className="flex justify-end mr-5">
-            <button
-              data-modal-target="popup-modal"
-              data-modal-toggle="popup-modal"
-              className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
-              type="button"
-              onClick={toggleModal}
-            >
-              Reset Winner
-            </button>
+            {
+              winnerList.length <= 0 ? (null) : (
+                <button
+                  data-modal-target="popup-modal"
+                  data-modal-toggle="popup-modal"
+                  className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2"
+                  type="button"
+                  onClick={toggleModal}
+                >
+                  Reset Winner
+                </button>
+              )
+            }
             {isOpen && (
               <div
                 id="popup-modal"
@@ -117,10 +122,21 @@ export default function Winner() {
           </div>
 
           <div className="pl-8 pr-4">
-            <ol className="relative border-l border-gray-200 dark:border-gray-700 mt-5">
-              {winnerList?.map((item, index) => (
-                <WinnerCard items={item} key={index} order={index + 1} />
-              ))}
+            <ol className="relative border-l border-gray-200 mt-5">
+              {
+                winnerList.length <= 0 ? (
+                  <div className="flex justify-center items-center h-full">
+                    <div className="flex flex-col items-center justify-center">
+                      <img src={noData} alt="no_data" className="w-44" />
+                      <div>No winner.</div>
+                    </div>
+                  </div>
+                ) : (
+                  winnerList?.map((item, index) => (
+                    <WinnerCard items={item} key={index} order={index + 1} />
+                  ))
+                )
+              }
             </ol>
           </div>
         </div>
