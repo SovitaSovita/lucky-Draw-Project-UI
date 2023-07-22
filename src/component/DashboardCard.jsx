@@ -41,17 +41,6 @@ export default function DashboardCard() {
 
     return (
         <div className='grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 lg:gap-6 md:gap-4 sm:gap-2'>
-            <div className="rounded-xl bg-gradient-to-r from-brand-red to-[#FF694F] shadow-md border">
-                <div className="flex justify-between items-center">
-                    <div className='py-4 px-6 text-base-100'>
-                        <h2 className="card-title uppercase">Event</h2>
-                        <span>Event name</span>
-                    </div>
-                    <div>
-                        <FileDownloadOutlinedIcon sx={{ fontSize: 100 }} className='opacity-20 rotate-12' />
-                    </div>
-                </div>
-            </div>
             <Link
              to="/winner"
             >
@@ -83,6 +72,18 @@ export default function DashboardCard() {
                 </div>
             </div>
             </Link>
+
+            <div className="rounded-xl bg-gradient-to-r from-gray-300 to-gray-400 shadow-md border opacity-50">
+                <div className="flex justify-between items-center">
+                    <div className='py-4 px-6 text-slate-500'>
+                        <h2 className="card-title uppercase">Setup Background</h2>
+                        <span>Comming soon.!!</span>
+                    </div>
+                    <div>
+                        <FileDownloadOutlinedIcon sx={{ fontSize: 100 }} className='opacity-20 rotate-12' />
+                    </div>
+                </div>
+            </div>
           
         </div>
     )

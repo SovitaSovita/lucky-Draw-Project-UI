@@ -2,11 +2,12 @@ import axios from "axios"
 import { toast } from "react-hot-toast"
 
 export const BASE_URL = `http://16.170.232.28:8080`
+export const token = localStorage.getItem("token");
 
 export const API_HEADER = axios.create({
     baseURL: BASE_URL,
     headers: {
-        'Authorization': `Bearer ${localStorage.getItem("token")}`,
+        'Authorization': `Bearer ${token}`,
     },
 })
 export const API = axios.create({

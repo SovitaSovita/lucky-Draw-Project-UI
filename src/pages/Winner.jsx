@@ -4,18 +4,25 @@ import WinnerCard from "../component/WinnerCard";
 import { get_winner, reset_winner } from "../redux/service/WinnerService";
 import { notifySuccess } from "../redux/Constants";
 import noData from '../assets/img/undraw_No_data_re_kwbl.png'
+import { Spinner } from "flowbite-react";
 
 export default function Winner() {
   const [isOpen, setIsOpen] = useState(false);
   const [winnerList, setWinnerList] = useState([]);
+  const [isLoading, setIsLoading] = useState(false)
+
   useEffect(() => {
+    setIsLoading(true)
     get_winner().then((res) => {
+      setIsLoading(false)
       setWinnerList(res?.data?.payload);
     });
   }, []);
 
   const resetWinner = () => {
+    setIsLoading(true)
     reset_winner().then((r) => {
+      setIsLoading(false)
       setWinnerList([])
       notifySuccess("reset winner Successfully.")
       toggleModal();
@@ -35,7 +42,7 @@ export default function Winner() {
         <div className="p-4 border-2 border-gray-200 min-h-screen border-dashed rounded-lg ">
           <Navbar />
           {/* winner */}
-          <div className="flex justify-end mr-5">
+          <div className="flex justify-end">
             {
               winnerList?.length <= 0 ? (null) : (
                 <button
@@ -101,7 +108,7 @@ export default function Winner() {
                       <button
                         data-modal-hide="popup-modal"
                         type="button"
-                        className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2"
+                        className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center"
                         onClick={resetWinner}
                       >
                         Yes, I'm sure
@@ -121,24 +128,32 @@ export default function Winner() {
             )}
           </div>
 
-          <div className="pl-8 pr-4">
-            <ol className="relative border-l border-gray-200 mt-5">
-              {
-                winnerList?.length <= 0 ? (
-                  <div className="flex justify-center items-center h-full">
-                    <div className="flex flex-col items-center justify-center">
-                      <img src={noData} alt="no_data" className="w-44" />
-                      <div>No winner.</div>
-                    </div>
-                  </div>
-                ) : (
-                  winnerList?.map((item, index) => (
-                    <WinnerCard items={item} key={index} order={index + 1} />
-                  ))
-                )
-              }
-            </ol>
-          </div>
+          {
+            isLoading ? (
+              <div className="flex justify-center items-center">
+                <Spinner />
+              </div>
+            ) : (
+              <div className="pl-8 pr-4">
+                <ol className="relative border-l border-gray-200 mt-5">
+                  {
+                    winnerList?.length <= 0 ? (
+                      <div className="flex justify-center items-center h-full">
+                        <div className="flex flex-col items-center justify-center">
+                          <img src={noData} alt="no_data" className="w-44" />
+                          <div>No winner.</div>
+                        </div>
+                      </div>
+                    ) : (
+                      winnerList?.map((item, index) => (
+                        <WinnerCard items={item} key={index} order={index + 1} />
+                      ))
+                    )
+                  }
+                </ol>
+              </div>
+            )
+          }
         </div>
       </div>
     </>

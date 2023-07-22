@@ -10,7 +10,7 @@ export default function Navbar() {
     return (
         <div>
             {/* navbar head */}
-            <div className='flex justify-between px-4 mb-12'>
+            <div className='flex justify-between border-b pb-4 px-4 mb-8'>
                 <div>
                     <span className='text-gray-500'>Pages</span> {currentPath}
                 </div>

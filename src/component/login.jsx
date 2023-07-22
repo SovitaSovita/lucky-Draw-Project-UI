@@ -40,6 +40,7 @@ export default function Login() {
     loginService(user).then((r) => {
       console.log("DATA", r);
       if (r.status === 200) {
+        localStorage.setItem("token", r.data.payload.token);
         dispatch(setLoading(false));
         navigate("/");
       } else {

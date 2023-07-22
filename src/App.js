@@ -12,7 +12,6 @@ import Login from './component/login';
 import Protected from './redux/service/Protected';
 
 function App() {
-
   return (
     <Routes>
         <Route path='lucky-draw' element={<Protected><FontEndPage /></Protected>} />

@@ -24,10 +24,13 @@ import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 
 import { add_list, delete_list, get_list, update_list, upload_excel } from '../redux/service/TableListService';
-import { API_HEADER, notifySuccess } from '../redux/Constants';
+import { API_HEADER, notifyError, notifySuccess } from '../redux/Constants';
 import AlertMesages from './AlertMesages';
 import { useDispatch } from 'react-redux';
 import { setListData } from '../redux/slice/ListSlice';
+import { useSelector } from 'react-redux';
+import RemoveCustomer from './RemoveCustomer';
+import { Spinner } from 'flowbite-react';
 
 
 const tableIcons = {
@@ -52,11 +55,14 @@ const tableIcons = {
 };
 
 const TableList = () => {
+
+  const [isLoading, setIsLoading] = useState(false)
+  
   const options = {
     headers: { "Access-Control-Allow-Headers": "Content-Type" }
   }
   const columns = [
-    { title: 'No', field: 'No', editable: 'never', render: rowData => rowData.tableData.id + 1},
+    { title: 'No', field: 'No', editable: 'never', render: rowData => rowData.tableData.id + 1 },
     { title: 'Order Date', field: 'dateOfOrder', type: 'date' },
     { title: 'Name', field: 'name' },
     { title: 'Telephone', field: 'phoneNumber' },
@@ -71,7 +77,10 @@ const TableList = () => {
 
 
   const Table = () => {
+    setIsLoading(true)
+
     get_list().then((res) => {
+      setIsLoading(false)
       const convertedData = res?.data?.payload?.map(item => {
         // Convert the timestamp to a JavaScript Date object
         const dateObject = new Date(item.dateOfOrder);
@@ -86,6 +95,7 @@ const TableList = () => {
       setListCustomers(convertedData);
       dispatch(setListData(res?.data?.payload))
     }).catch((e) => {
+      setIsLoading(false)
       console.log(e)
     })
   }
@@ -127,79 +137,92 @@ const TableList = () => {
         onChange={handleFileChange}
         name="fileExcel"
       />
-      <MaterialTable
-        columns={columns}
-        title={null}
-        icons={tableIcons}
-        data={listCustomers}
-        editable={{
+      <RemoveCustomer Table={Table} />
 
-          // add function
-          onRowAdd: (newRow) => new Promise((resolve, reject) => {
-            add_list(newRow, options).then((res) => {
-              if (res?.status == 200) {
-                notifySuccess("Inserted Successfully.")
+
+      {/* table list */}
+      {
+        isLoading ? (
+          <div className="flex justify-center items-center">
+            <Spinner />
+          </div>
+        ) : (
+          <MaterialTable
+            columns={columns}
+            title={null}
+            icons={tableIcons}
+            data={listCustomers}
+            editable={{
+
+              // add function
+              onRowAdd: (newRow) => new Promise((resolve, reject) => {
+                add_list(newRow, options).then((res) => {
+                  if (res?.status == 200) {
+                    notifySuccess("Inserted Successfully.")
+                  } else {
+                    notifyError("Invaid Information.")
+                  }
+                  Table()
+                })
+                setTimeout(() => resolve(), 500)
+
+              }),
+
+              // update function
+              onRowUpdate: (newRow, oldRow) => new Promise((resolve, reject) => {
+                let newUpdateRow = {
+                  name: newRow.name,
+                  dateOfOrder: new Date(newRow.dateOfOrder).getTime(),
+                  orderNo: newRow.orderNo,
+                  phoneNumber: newRow.phoneNumber
+                }
+
+                update_list(newUpdateRow, oldRow).then((res) => {
+                  if (res?.status == 200) {
+                    notifySuccess("Updated Successfully.")
+                  }
+                  Table()
+                })
+                setTimeout(() => resolve(), 500)
+              }),
+
+              // delete function
+              onRowDelete: (selectedRow) => new Promise((resolve, reject) => {
+                delete_list(selectedRow?.no).then((res) => {
+                  if (res?.status == 200) {
+                    notifySuccess("Deleted Successfully.")
+                  }
+                  Table()
+                })
+                setTimeout(() => resolve(), 1000)
+              })
+            }}
+            // onSelectionChange={(selectedRows) => console.log(selectedRows)}
+            options={{
+              paging: true,
+              sorting: true,
+              search: true,
+              exportAllData: true, exportFileName: "TableData", addRowPosition: "first", actionsColumnIndex: -1,
+              // selection: true,
+              // showSelectAllCheckbox: false, showTextRowsSelected: true, selectionProps: rowData => ({
+              //   color: "primary"
+              // }),
+              // rowStyle: (data, index) => index % 2 === 0 ? { background: "#f5f5f5" } : null,
+              headerStyle: { background: "#f5f5f5", color: "#000", borderTop: "1px solid #D2D5DB" },
+              searchFieldAlignment: 'left',
+              searchFieldStyle: { background: "#f5f5f5", padding: "2px", marginRight: "18px", borderRadius: "8px 8px 0 0", borderBottom: 'none' }
+            }}
+            actions={[
+              {
+                icon: NoteAddOutlinedIcon,
+                tooltip: 'Import excel',
+                isFreeAction: true,
+                onClick: handleFileUpload
               }
-              Table()
-            })
-            setTimeout(() => resolve(), 500)
-
-          }),
-
-          // update function
-          onRowUpdate: (newRow, oldRow) => new Promise((resolve, reject) => {
-            let newUpdateRow = {
-              name: newRow.name,
-              dateOfOrder: new Date(newRow.dateOfOrder).getTime(),
-              orderNo: newRow.orderNo,
-              phoneNumber: newRow.phoneNumber
-            }
-
-            update_list(newUpdateRow, oldRow).then((res) => {
-              if (res?.status == 200) {
-                notifySuccess("Updated Successfully.")
-              }
-              Table()
-            })
-            setTimeout(() => resolve(), 500)
-          }),
-
-          // delete function
-          onRowDelete: (selectedRow) => new Promise((resolve, reject) => {
-            delete_list(selectedRow?.no).then((res) => {
-              if (res?.status == 200) {
-                notifySuccess("Deleted Successfully.")
-              }
-              Table()
-            })
-            setTimeout(() => resolve(), 1000)
-          })
-        }}
-        // onSelectionChange={(selectedRows) => console.log(selectedRows)}
-        options={{
-          paging: true,
-          sorting: true,
-          search: true,
-          exportAllData: true, exportFileName: "TableData", addRowPosition: "first", actionsColumnIndex: -1,
-          // selection: true,
-          // showSelectAllCheckbox: false, showTextRowsSelected: true, selectionProps: rowData => ({
-          //   color: "primary"
-          // }),
-          // rowStyle: (data, index) => index % 2 === 0 ? { background: "#f5f5f5" } : null,
-          headerStyle: { background: "#f5f5f5", color: "#000", borderTop: "1px solid #D2D5DB" },
-          searchFieldAlignment: 'left',
-          searchFieldStyle: { background: "#f5f5f5", padding: "2px", marginRight: "18px", borderRadius: "8px 8px 0 0", borderBottom: 'none' }
-        }}
-        actions={[
-          {
-            icon: NoteAddOutlinedIcon,
-            tooltip: 'Import excel',
-            isFreeAction: true,
-            onClick: handleFileUpload
-          }
-        ]}
-
-      />
+            ]}
+          />
+        )
+      }
     </>
   )
 }

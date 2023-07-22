@@ -46,11 +46,17 @@ export default function ChangePassword() {
           notifyError("Invalid password.")
           dispatch(setLoading(false));
         }
+        handleClear()
       });
-    }else{
+    } else {
       notifyError("Password not match.")
+      handleClear()
     }
   };
+
+  const handleClear = () => {
+    setPassword({})
+  }
 
   // formik for change password
   const SignUpSchema = Yup.object().shape({
@@ -60,139 +66,144 @@ export default function ChangePassword() {
   });
 
   return (
-    <div className="w-[80%] h-fit bg-white rounded-xl pb-10 mt-20 shadow-shadow_custom lg:ml-10">
-      <div className="w-full h-16 bg-green_custom rounded-xl flex items-center pl-20 xs:pl-8 md:pl-20 md:h-14 xs:h-20">
-        <p className="capitalize text-xl font-bold text-black mt-4">
-          change password
-        </p>
-      </div>
+    <div className="lg:px-32 md:px-24 px-4">
+      <div className="h-fit bg-white rounded-xl mt-20 py-6 lg:px-20 md:px-14 px-4 shadow-shadow_custom">
+        <div className="w-full h-16 bg-green_custom rounded-xl flex items-center">
+          <p className="capitalize text-xl font-bold text-black">
+            change password
+          </p>
+        </div>
 
-      {/* formik for change password */}
-      <Formik
-        initialValues={{
-          currentPassword: "",
-          newPassword: "",
-          confirmPassword: "",
-        }}
-        validationSchema={SignUpSchema}
-        onSubmit={(values) => { }}
-      >
-        {({ errors, touched }) => (
-          <Form
-            onChange={onChangePassword}
-            className="mx-28 mt-6 md:mx-20 xs:mx-7"
-          >
+        {/* formik for change password */}
+        <Formik
+          initialValues={{
+            currentPassword: "",
+            newPassword: "",
+            confirmPassword: "",
+          }}
+          validationSchema={SignUpSchema}
+          onSubmit={(values) => { }}
+        >
+          {({ errors, touched }) => (
+            <Form
+              onChange={onChangePassword}
+              className=""
+            >
 
-            <div className="mb-4">
-              <span className="label-text text-base font-sans">
-                Your Current Password
-              </span>
-              <div className="flex items-center bg-white-smoke rounded py-1 px-3">
-                <LockOutlinedIcon className="text-gray-500" />
-                <Field
-                  type={passwordEye ? "text" : "password"}
-                  placeholder="*********"
-                  name="currentPassword"
-                  id="password"
-                  className="bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2l focus:ring-0"
-                />
-                <span
-                  className="label-text mb-1 text-base cursor-pointer"
-                  onClick={() => {
-                    setPasswordEye(!passwordEye);
-                  }}
-                >
-                  <FontAwesomeIcon className="text-gray-500"
-                    icon={passwordEye ? faEye : faEyeSlash}
-                  />
+              <div className="mb-4">
+                <span className="label-text text-base font-sans">
+                  Your Current Password
                 </span>
-              </div>
-              {errors.currentPassword && touched.currentPassword ? (
-                <div className="text-red-500 text-sm">
-                  {errors.currentPassword}
+                <div className="flex items-center bg-white-smoke rounded py-1 px-3">
+                  <LockOutlinedIcon className="text-gray-500" />
+                  <Field
+                    type={passwordEye ? "text" : "password"}
+                    placeholder="*********"
+                    name="currentPassword"
+                    id="currentPassword"
+                    value={password.currentPassword || ''}
+                    className="bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2l focus:ring-0"
+                  />
+                  <span
+                    className="label-text mb-1 text-base cursor-pointer"
+                    onClick={() => {
+                      setPasswordEye(!passwordEye);
+                    }}
+                  >
+                    <FontAwesomeIcon className="text-gray-500"
+                      icon={passwordEye ? faEye : faEyeSlash}
+                    />
+                  </span>
                 </div>
-              ) : null}
-            </div>
-
-            <div className="mb-4">
-              <span className="label-text text-base font-sans">
-                New Password
-              </span>
-              <div className="flex items-center bg-white-smoke rounded py-1 px-3">
-                <LockOutlinedIcon className="text-gray-500" />
-                <Field
-                  type={passwordEye ? "text" : "password"}
-                  placeholder="*********"
-                  name="newPassword"
-                  id="password"
-                  className="bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2l focus:ring-0"
-                />
-                <span
-                  className="label-text mb-1 text-base cursor-pointer"
-                  onClick={() => {
-                    setPasswordEye(!passwordEye);
-                  }}
-                >
-                  <FontAwesomeIcon className="text-gray-500"
-                    icon={passwordEye ? faEye : faEyeSlash}
-                  />
-                </span>
+                {errors.currentPassword && touched.currentPassword ? (
+                  <div className="text-red-500 text-sm">
+                    {errors.currentPassword}
+                  </div>
+                ) : null}
               </div>
-              {errors.newPassword && touched.newPassword ? (
-                <div className="text-red-500 text-sm">{errors.newPassword}</div>
-              ) : null}
-            </div>
 
-
-            <div className="mb-4">
-              <span className="label-text text-base font-sans">
-                Confirm New Password
-              </span>
-              <div className="flex items-center bg-white-smoke rounded py-1 px-3">
-                <LockOutlinedIcon className="text-gray-500" />
-                <Field
-                  type={passwordEye1 ? "text" : "password"}
-                  placeholder="*********"
-                  name="confirmPassword"
-                  id="password"
-                  className="bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2l focus:ring-0"
-                />
-                <span
-                  className="label-text mb-1 text-base cursor-pointer"
-                  onClick={() => {
-                    setPasswordEye(!passwordEye1);
-                  }}
-                >
-                  <FontAwesomeIcon className="text-gray-500"
-                    icon={passwordEye1 ? faEye : faEyeSlash}
-                  />
+              <div className="mb-4">
+                <span className="label-text text-base font-sans">
+                  New Password
                 </span>
-              </div>
-              {errors.confirmPassword && touched.confirmPassword ? (
-                <div className="text-red-500 text-sm">
-                  {errors.confirmPassword}
+                <div className="flex items-center bg-white-smoke rounded py-1 px-3">
+                  <LockOutlinedIcon className="text-gray-500" />
+                  <Field
+                    type={passwordEye2 ? "text" : "password"}
+                    placeholder="*********"
+                    name="newPassword"
+                    id="newPassword"
+                    value={password.newPassword || ''}
+                    className="bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2l focus:ring-0"
+                  />
+                  <span
+                    className="label-text mb-1 text-base cursor-pointer"
+                    onClick={() => {
+                      setPasswordEye2(!passwordEye2);
+                    }}
+                  >
+                    <FontAwesomeIcon className="text-gray-500"
+                      icon={passwordEye2 ? faEye : faEyeSlash}
+                    />
+                  </span>
                 </div>
-              ) : null}
-            </div>
+                {errors.newPassword && touched.newPassword ? (
+                  <div className="text-red-500 text-sm">{errors.newPassword}</div>
+                ) : null}
+              </div>
 
-            <div className="flex justify-end mt-10">
-              {/* <button
+
+              <div className="mb-4">
+                <span className="label-text text-base font-sans">
+                  Confirm New Password
+                </span>
+                <div className="flex items-center bg-white-smoke rounded py-1 px-3">
+                  <LockOutlinedIcon className="text-gray-500" />
+                  <Field
+                    type={passwordEye1 ? "text" : "password"}
+                    placeholder="*********"
+                    name="confirmPassword"
+                    id="confirmPassword"
+                    value={password.confirmPassword || ''}
+                    className="bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2l focus:ring-0"
+                  />
+                  <span
+                    className="label-text mb-1 text-base cursor-pointer"
+                    onClick={() => {
+                      setPasswordEye1(!passwordEye1);
+                    }}
+                  >
+                    <FontAwesomeIcon className="text-gray-500"
+                      icon={passwordEye1 ? faEye : faEyeSlash}
+                    />
+                  </span>
+                </div>
+                {errors.confirmPassword && touched.confirmPassword ? (
+                  <div className="text-red-500 text-sm">
+                    {errors.confirmPassword}
+                  </div>
+                ) : null}
+              </div>
+
+              <div className="flex justify-end mt-10">
+                {/* <button
                 type="button"
                 onClick={onSubmitPassword}
                 className="btn"
               >
                 {Loading ? <Spinner /> : "Save"}
               </button> */}
-              <Button
-                type="button"
-                onClick={onSubmitPassword} variant="contained" endIcon={<SaveAsOutlinedIcon />}>
-                Send
-              </Button>
-            </div>
-          </Form>
-        )}
-      </Formik>
-      <AlertMesages />
+                <Button
+                  type="button"
+                  onClick={onSubmitPassword} variant="contained" endIcon={<SaveAsOutlinedIcon />}>
+                  Send
+                </Button>
+              </div>
+            </Form>
+          )}
+        </Formik>
+        <AlertMesages />
+      </div>
     </div>
   );
 }
