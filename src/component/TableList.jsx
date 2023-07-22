@@ -57,7 +57,7 @@ const tableIcons = {
 const TableList = () => {
 
   const [isLoading, setIsLoading] = useState(false)
-  
+
   const options = {
     headers: { "Access-Control-Allow-Headers": "Content-Type" }
   }
@@ -137,8 +137,6 @@ const TableList = () => {
         onChange={handleFileChange}
         name="fileExcel"
       />
-      <RemoveCustomer Table={Table} />
-
 
       {/* table list */}
       {
@@ -147,80 +145,83 @@ const TableList = () => {
             <Spinner />
           </div>
         ) : (
-          <MaterialTable
-            columns={columns}
-            title={null}
-            icons={tableIcons}
-            data={listCustomers}
-            editable={{
+          <div>
+            <MaterialTable
+              columns={columns}
+              title={null}
+              icons={tableIcons}
+              data={listCustomers}
+              editable={{
 
-              // add function
-              onRowAdd: (newRow) => new Promise((resolve, reject) => {
-                add_list(newRow, options).then((res) => {
-                  if (res?.status == 200) {
-                    notifySuccess("Inserted Successfully.")
-                  } else {
-                    notifyError("Invaid Information.")
+                // add function
+                onRowAdd: (newRow) => new Promise((resolve, reject) => {
+                  add_list(newRow, options).then((res) => {
+                    if (res?.status == 200) {
+                      notifySuccess("Inserted Successfully.")
+                    } else {
+                      notifyError("Invaid Information.")
+                    }
+                    Table()
+                  })
+                  setTimeout(() => resolve(), 500)
+
+                }),
+
+                // update function
+                onRowUpdate: (newRow, oldRow) => new Promise((resolve, reject) => {
+                  let newUpdateRow = {
+                    name: newRow.name,
+                    dateOfOrder: new Date(newRow.dateOfOrder).getTime(),
+                    orderNo: newRow.orderNo,
+                    phoneNumber: newRow.phoneNumber
                   }
-                  Table()
+
+                  update_list(newUpdateRow, oldRow).then((res) => {
+                    if (res?.status == 200) {
+                      notifySuccess("Updated Successfully.")
+                    }
+                    Table()
+                  })
+                  setTimeout(() => resolve(), 500)
+                }),
+
+                // delete function
+                onRowDelete: (selectedRow) => new Promise((resolve, reject) => {
+                  delete_list(selectedRow?.no).then((res) => {
+                    if (res?.status == 200) {
+                      notifySuccess("Deleted Successfully.")
+                    }
+                    Table()
+                  })
+                  setTimeout(() => resolve(), 1000)
                 })
-                setTimeout(() => resolve(), 500)
-
-              }),
-
-              // update function
-              onRowUpdate: (newRow, oldRow) => new Promise((resolve, reject) => {
-                let newUpdateRow = {
-                  name: newRow.name,
-                  dateOfOrder: new Date(newRow.dateOfOrder).getTime(),
-                  orderNo: newRow.orderNo,
-                  phoneNumber: newRow.phoneNumber
+              }}
+              // onSelectionChange={(selectedRows) => console.log(selectedRows)}
+              options={{
+                paging: true,
+                sorting: true,
+                search: true,
+                exportAllData: true, exportFileName: "TableData", addRowPosition: "first", actionsColumnIndex: -1,
+                // selection: true,
+                // showSelectAllCheckbox: false, showTextRowsSelected: true, selectionProps: rowData => ({
+                //   color: "primary"
+                // }),
+                // rowStyle: (data, index) => index % 2 === 0 ? { background: "#f5f5f5" } : null,
+                headerStyle: { background: "#f5f5f5", color: "#000", borderTop: "1px solid #D2D5DB" },
+                searchFieldAlignment: 'left',
+                searchFieldStyle: { background: "#f5f5f5", padding: "2px", marginRight: "18px", borderRadius: "8px 8px 0 0", borderBottom: 'none' }
+              }}
+              actions={[
+                {
+                  icon: NoteAddOutlinedIcon,
+                  tooltip: 'Import excel',
+                  isFreeAction: true,
+                  onClick: handleFileUpload
                 }
-
-                update_list(newUpdateRow, oldRow).then((res) => {
-                  if (res?.status == 200) {
-                    notifySuccess("Updated Successfully.")
-                  }
-                  Table()
-                })
-                setTimeout(() => resolve(), 500)
-              }),
-
-              // delete function
-              onRowDelete: (selectedRow) => new Promise((resolve, reject) => {
-                delete_list(selectedRow?.no).then((res) => {
-                  if (res?.status == 200) {
-                    notifySuccess("Deleted Successfully.")
-                  }
-                  Table()
-                })
-                setTimeout(() => resolve(), 1000)
-              })
-            }}
-            // onSelectionChange={(selectedRows) => console.log(selectedRows)}
-            options={{
-              paging: true,
-              sorting: true,
-              search: true,
-              exportAllData: true, exportFileName: "TableData", addRowPosition: "first", actionsColumnIndex: -1,
-              // selection: true,
-              // showSelectAllCheckbox: false, showTextRowsSelected: true, selectionProps: rowData => ({
-              //   color: "primary"
-              // }),
-              // rowStyle: (data, index) => index % 2 === 0 ? { background: "#f5f5f5" } : null,
-              headerStyle: { background: "#f5f5f5", color: "#000", borderTop: "1px solid #D2D5DB" },
-              searchFieldAlignment: 'left',
-              searchFieldStyle: { background: "#f5f5f5", padding: "2px", marginRight: "18px", borderRadius: "8px 8px 0 0", borderBottom: 'none' }
-            }}
-            actions={[
-              {
-                icon: NoteAddOutlinedIcon,
-                tooltip: 'Import excel',
-                isFreeAction: true,
-                onClick: handleFileUpload
-              }
-            ]}
-          />
+              ]}
+            />
+            <RemoveCustomer Table={Table} />
+          </div>
         )
       }
     </>
