@@ -10,7 +10,7 @@ export default function Spinners() {
                 size="xl"
             /> */}
       {/* <CSpinner color="primary"/> */}
-      <div class="custom-loader"></div>
+      <div className="custom-loader"></div>
     </div>
   )
 }
