@@ -8,6 +8,12 @@ import * as Yup from "yup";
 import { useSelector } from "react-redux";
 import LoadingComponentBtn from "./LoadingComponent";
 import { setLoading } from "../redux/slice/LoadingSlice";
+import { Spinner } from "flowbite-react";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import ErrorOutlineOutlinedIcon from "@mui/icons-material/ErrorOutlineOutlined";
+import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 
 
 
@@ -21,6 +27,7 @@ export default function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const Loading = useSelector((state) => state.loading.value);
+  const [passwordEye, setPasswordEye] = useState(false);
 
 
   const handleInput = (e) => {
@@ -28,14 +35,14 @@ export default function Login() {
     setUser({ ...user, [name]: value });
   };
 
-  const handleLogin = (values, { setFieldError}) => {
+  const handleLogin = (values, { setFieldError }) => {
     dispatch(setLoading(true));
     loginService(user).then((r) => {
       console.log("DATA", r);
-      if(r.status === 200){
+      if (r.status === 200) {
         dispatch(setLoading(false));
         navigate("/");
-      }else{
+      } else {
         dispatch(setLoading(false));
         setFieldError("username", "username not exist");
         setFieldError("password", "Password incorrect");
@@ -46,11 +53,9 @@ export default function Login() {
 
   return (
     <div className="relative flex flex-col justify-center min-h-screen overflow-hidden">
-      <div className="w-full p-6 m-auto bg-slate-200 rounded-md shadow-md lg:max-w-xl">
-        <img src={logo} className="" />
-        <div className="text-center font-semibold uppercase text-3xl mt-6 font-poppin">
-          welcome back 
-        </div>
+      <div className="w-full p-6 m-auto bg-white shadow border rounded-lg lg:max-w-xl">
+        <img src={logo} className="m-auto" />
+
         <Formik
           initialValues={{
             username: "",
@@ -68,64 +73,58 @@ export default function Login() {
                   onChange={handleInput}
                 >
                   {/* Email and Phone */}
-                  <label
-                    htmlFor="email"
-                    className="font-medium text-base text-left text-text_normal"
-                  >
-                    Email
-                  </label>
-                  <div className="relative">
-                    <Field
-                      type="text"
-                      style={{
-                        ':focus': {
-                          border:'2',
-                          borderColor: 'green',
-                        }
-                      }}
-                      placeholder="Admin"
-                      name="username"
-                      id="username"
-                      className={`input-field w-full focus:rounded-[20px] rounded-[20px] focus:outline-b-green_custom focus:border-2 focus:drop-shadow-md  focus:border-b-green_custom   focus:ring-0 focus:border-transparent  ${
-                        touched.username && errors.username ? "input-error rounded-[20px] focus:border-b-0" : ""
-                      }  
-                      }`}
-                    />
-                    <div
-                      className="text-gray-500 absolute right-3 top-5 transform -translate-y-1/2"
-                      size={20}
-                    />
+                  <div className="mt-6 mb-3">
+                    <span className="label-text text-base font-sans">
+                      Username
+                    </span>
+                    <div className="flex items-center bg-white-smoke rounded py-1 px-3">
+                      <EmailOutlinedIcon className="text-gray-500"/>
+                      <Field
+                        placeholder="Admin"
+                        name="username"
+                        id="username"
+                        className="bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 focus:outline-none focus:ring-0"
+                      />
+                    </div>
                     {errors.username && touched.username ? (
                       <div className="text-red-500 ml-3 text-sm mt-2">
                         {errors.username}
                       </div>
                     ) : null}
                   </div>
-                  {/* Password */}
-                  <label
-                    htmlFor="password"
-                    className="font-medium text-base text-left text-text_normal"
-                  >
-                    Password
-                  </label>
-                  <div className="relative inline-flex items-center w-full">
-                    <Field
-                      type="password"
-                      placeholder="Password"
-                      name="password"
-                      id="password"
-                      className={`input-field border-2 w-full focus:rounded-[20px] rounded-[20px]   focus:outline-b-green_custom focus:border-2 focus:drop-shadow-md focus:border-b-green_custom   focus:ring-0 focus:border-transparent  ${
-                        touched.password && errors.password
-                          ? "input-error  rounded-[20px] focus:border-b-0"
-                          : ""
-                      }`}
-                    />
-                  </div>
-                  {errors.password && touched.password ? (
-                    <div className="text-red-500 ml-3 text-sm">
-                      {errors.password}
+
+                  {/* Field Password */}
+                  <div className="mb-4">
+                    <span className="label-text text-base font-sans">
+                      Password
+                    </span>
+                    <div className="flex items-center bg-white-smoke rounded py-1 px-3">
+                      <LockOutlinedIcon className="text-gray-500"/>
+                      <Field
+                        type={passwordEye ? "text" : "password"}
+                        placeholder="Password"
+                        name="password"
+                        id="password"
+                        className="bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2l focus:ring-0"
+                      />
+                      <span
+                        className="label-text mb-1 text-base cursor-pointer"
+                        onClick={() => {
+                          setPasswordEye(!passwordEye);
+                        }}
+                      >
+                        <FontAwesomeIcon className="text-gray-500"
+                          icon={passwordEye ? faEye : faEyeSlash}
+                        />
+                      </span>
                     </div>
-                  ) : null}
+                    {errors.password && touched.password ? (
+                      <div className="text-red-500 ml-3 text-sm">
+                        {errors.password}
+                      </div>
+                    ) : null}
+                  </div>
+
                   <a
                     className=" text-green_custom font-medium text-left ml-2"
                   >
@@ -136,7 +135,7 @@ export default function Login() {
                     type="submit"
                     className="w-full font-roboto px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-black rounded-md hover:bg-black focus:outline-none focus:bg-black"
                   >
-                    {Loading ? <LoadingComponentBtn /> : "Sign in"}
+                    {Loading ? <Spinner /> : "Sign in"}
                   </button>
                 </Form>
 
