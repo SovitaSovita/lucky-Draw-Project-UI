@@ -6,18 +6,37 @@ import { useSelector } from "react-redux";
 import { get_list, insert_winner } from "../redux/service/TableListService";
 import { notifyError } from "../redux/Constants";
 
+import soundEffect from '../assets/sound/goodresult-82807.mp3'
+import moto from '../assets/img/motos.png'
+import logo from '../assets/img/frontend/logo.png'
+import { Spinner } from "flowbite-react";
+import CongratulationPopUp from "./CongratulationPopUp";
+import Confetti from "./Confetti";
+
+
 function RandomPicker() {
   const [isRunning, setIsRunning] = useState(false);
   const [currentChoice, setCurrentChoice] = useState("");
   const [winnerName, setWinnerName] = useState("");
-  const [isWinner,setIsWinner] = useState(false)
+  const [isWinner, setIsWinner] = useState(false)
   const [isFullScreen, setIsFullScreen] = useState(false);
-  const [storeWinner,setStoreWinner] = useState([])
+  const [storeWinner, setStoreWinner] = useState([])
   const intervalDuration = 25;
-  const duration = 3500;
+  const duration = 5500;
   let interval = null;
 
   const [items, setItems] = useState([])
+  const [playSound, setPlaySound] = useState(false);
+
+  let [isOpen, setIsOpen] = useState(false)
+
+  function closeModal() {
+    setIsOpen(false)
+  }
+
+  function openModal() {
+    setIsOpen(true)
+  }
 
   useEffect(() => {
     get_list()
@@ -33,7 +52,7 @@ function RandomPicker() {
         console.error("Error fetching list data:", error);
       });
   }, []);
-  
+
 
   const isRunningRef = useRef(false);
 
@@ -55,15 +74,23 @@ function RandomPicker() {
         }
         setIsWinner(true)
         setWinnerName(choice.name)
-        insert_winner(formWinnerInfo).then(()=>{
+        // console.log(formWinnerInfo)
+        
+        setPlaySound(true)
+        // openModal()
+        insert_winner(formWinnerInfo).then(() => {
           get_list().then((res) => {
             setItems(res.data.payload)
-          stop();
-        })
-        
+            setTimeout(()=>{
+              setIsWinner(false)
+            }, duration)
+            stop();
+          })
+
         })
       }
     }, duration);
+    setPlaySound(false)
   };
 
   const stop = () => {
@@ -88,144 +115,47 @@ function RandomPicker() {
 
   const choiceContent = currentChoice?.trim().length > 0 ? currentChoice : "?";
 
-  // const zoomOut = () => {
-  //   const button = document.querySelector(".fullscreen-button");
-  //   setIsFullScreen(true);
-  //   if (button) {
-  //     if (button.requestFullscreen) {
-  //       button.requestFullscreen();
-  //     } else if (button.mozRequestFullScreen) {
-  //       button.mozRequestFullScreen();
-  //     } else if (button.webkitRequestFullscreen) {
-  //       button.webkitRequestFullscreen();
-  //     } else if (button.msRequestFullscreen) {
-  //       button.msRequestFullscreen();
-  //     }
-  //   }
-  // };
-
-  // const zoomIn = () => {
-  //   const exitFullscreen =
-  //     document.exitFullscreen ||
-  //     document.mozCancelFullScreen ||
-  //     document.webkitExitFullscreen ||
-  //     document.msExitFullscreen;
-
-  //   if (exitFullscreen) {
-  //     exitFullscreen.call(document);
-  //   }
-
-  //   setIsFullScreen(false);
-  // };
-
   return (
-    <div className="main-font-end">
-      <div
-        className={
-          isFullScreen
-            ? "RandomPicker fullscreen-button"
-            : "RandomPicker fullscreen-button"
+    <>
+      <div className="main-font-end bg-cover bg-bottom bg-hero-front">
+        {
+          isWinner ? <Confetti /> : null
         }
-        style={{ backgroundColor: isFullScreen ? "#FF422E" : "" }}
-      >
-        {/* Zoom */}
-        {/* <div className=" text-white text-sm absolute top-0 right-0 mt-4 mr-4">
-          {!isFullScreen ? (
-            <button onClick={zoomOut}>
-              <CropFreeOutlinedIcon className="mr-2" />
-            </button>
-          ) : (
-            <button onClick={zoomIn}>
-              <ZoomInMapOutlinedIcon className="mr-2" />
-            </button>
-          )}
-        </div> */}
+        {playSound && (
+          <audio autoPlay>
+            <source src={soundEffect} type="audio/mpeg" />
+          </audio>
+        )}
+        <div className="main_draw_box z-10 mb-32">
+          <img src={moto} alt="" className="object-cover w-full h-full" />
 
-        {/* Luckydraw text */}
-        <div className="">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            xmlnsXlink="http://www.w3.org/1999/xlink"
-            width="739px"
-            height="137px"
-          >
-            <text
-              kerning="auto"
-              fontFamily="Myriad Pro"
-              strokeWidth="16px"
-              stroke="rgb(244, 183, 30)"
-              fillOpacity="0"
-              strokeOpacity="1"
-              fontSize="10px"
-              x="6px"
-              y="75.072px"
-            >
-              <tspan
-                fontSize="80px"
-                fontFamily="Angkor Sovann Fantasy_02"
-                fill="#FFFFFF"
-              >
-                Lucky Draw
-              </tspan>
-            </text>
-            <text
-              kerning="auto"
-              fontFamily="Myriad Pro"
-              fill="rgb(0, 0, 0)"
-              fontSize="10px"
-              x="6px"
-              y="75.072px"
-            >
-              <tspan
-                fontSize="80px"
-                fontFamily="Angkor Sovann Fantasy_02"
-                fill="#FFFFFF"
-              >
-                Lucky Draw
-              </tspan>
-            </text>
-          </svg>
-        </div>
-
-        {/* Display Winner */}
-        <div
-          style={{ boxShadow: "8px 8px 0px rgba(0, 8, 0, 0.4)" }}
-          className="relative bg-[#FFBF1F] mb-8 rounded-xl w-[740px] h-[160px] flex justify-center items-center"
-        >
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="border-dotted border-[10px] border-white rounded-xl w-[720px] h-[140px]">
-              <div className=" rounded-xl w-full h-full"></div>
-            </div>
-          </div>
-          <div className="flex RandomPicker__choice bg-white w-[690px] h-[110px] rounded-md text-center justify-center items-center text-black">
-            <span className="RandomPicker__choiceItem text-[43px]">
-              {isWinner? winnerName : choiceContent}
-            </span>
+          <div className="name_box font-bold line-clamp-1">
+            {isWinner ? winnerName : choiceContent}
           </div>
         </div>
 
         {/* Button Draw */}
-        <div className="RandomPicker__controls">
-          {!isRunning ? (
-            <button
-              style={{
-                visibility: isRunning ? "invisible" : "visible",
-                boxShadow: "8px 8px 0px rgba(0, 8, 0, 0.4)",
-              }}
-              className="text-white mt-4 py-3 px-[140px] bg-[#FFBF1F] hover:bg-[#FFCA28] rounded-lg text-[24px]"
-              onClick={items.length <=0 ? notifyError("No data") : ()=>{start(items)}}
-            >
-              {isRunning ? null : "Draw"}
-            </button>
-          ) : null}
-        </div>
+
+        {isRunning ? null : (
+          <div class="RandomPicker__controls rounded-xl mt-10 bg-gradient-to-t from-red-weight to-red-light p-1.5 shadow cursor-pointer z-10"
+            onClick={items.length <= 0 ? notifyError("No data") : () => { start(items) }}
+          >
+            <div class="flex h-full w-full items-center justify-center rounded-lg bg-white hover:bg-slate-200 back px-12 shadow border py-2 font-extrabold text-2xl">
+              Draw
+            </div>
+          </div>
+        )}
 
         {/* Copyright */}
-        <div className="text-white text-sm absolute bottom-2 mt-4 mr-4">
-          © Klassy Watches・
+        <div className="absolute bottom-4 mt-4 mr-4">
+          <div className="w-28">
+            <img src={logo} alt="logo" className="w-full h-full object-cover" />
+          </div>
         </div>
       </div>
-    </div>
+
+      {/* <CongratulationPopUp isOpen={isOpen} closeModal={closeModal}/> */}
+    </>
   );
 }
 

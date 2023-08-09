@@ -23,22 +23,6 @@ code {
     monospace;
 }
 
-#truncate {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
-  overflow: hidden; 
-}
-#text-justify{
-  text-align: justify
-}
-#text-left{
-  text-align: left
-}
-.closeBtn{
-  background-color: black
-}
-
 html {
   --color-background: #ffffff;
   --color-text: #000000;
@@ -48,113 +32,52 @@ html {
   --color-button-text: #ffffff;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    --color-background: #000213;
-    --color-text: #a5a8d2;
-    --color-text-light: #444766;
-    --color-button-start: #0557ff;
-    --color-button-stop: #ff0000;
-    --color-button-text: #d8d8d8;
-  }
-}
-
 .main-font-end {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 	margin: 0;
 	padding: 0;
-  width: 100%;
-	min-height: 100vh;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-  background: linear-gradient(90deg, rgba(255,14,68,1) 0%, rgba(255,67,46,1) 100%);
+	min-height: 100vh;  
+  background-color: #bd0202;
 }
 
-.RandomPicker {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-  padding: 16px;
-  font-family: 'Helvetica', sans-serif;
-}
-
-.RandomPicker__choice {
-  display: flex;
-	align-content: center;
-  
-	margin: 0;
-  
-	color: var(--color-text);
-	font-size: 60px;
-  font-weight: bold;
-	line-height: 1;
-	text-align: center;
-	white-space: nowrap;
-}
-
-
-.RandomPicker__button {
-  display: block;
-	padding: .8em 1.6em;
-  min-width: 160px;
-  
-	color: var(--color-button-text);
-	font-size: 20px;
-	font-weight: bold;
-	text-align: center;
-	text-transform: uppercase;
-	letter-spacing: 2px;
-  
-	border: 0;
-	border-radius: 4em;
-	background-color: var(--color-button-start);
-
-  user-select: none;
-  cursor: pointer;
-  
-  transition: 
-    background-color 250ms ease-in-out,
-    color 150ms ease-in-out;
-  
-  &--stop {  
-  	background-color: var(--color-button-stop);
+/* @media only screen and (max-width: 992px){
+  .main-font-end{
+    width: 800px;
   }
-	
-	&--reset {
-		color: var(--color-text);
-		font-size: 14px;
-		text-transform: lowercase;
-    background-color: inherit;
-    
-    &[disabled] {
-      color: var(--color-text-light);
-      text-decoration: line-through;
-      cursor: not-allowed;
-    }
-	}
-}
+} */
 
 .RandomPicker__controls {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  position: absolute;
+  left: 50%;
+  top: 70%;
+  transform:translate(-50%, -50%);
   
   > *:not(:last-child) {
     margin-bottom: 16px;
   }
 } 
 
-.text-luckydraw {
-  font-size: 250px;
-  font-family: "Angkor Sovann Fantasy_02";
-  color: rgb(255, 255, 255);
-  line-height: 1.2;
-  text-align: left;
-  position: absolute;
-  left: 431.344px;
-  top: 1479.523px;
-  z-index: 3;
+
+
+.main_draw_box{
+  position: relative;
+  width: 850px;
+  height: auto;
 }
-
-
+/* @media only screen and (min-width: 1536px){
+  .main_draw_box{
+    padding-top: 120px;
+  }
+} */
+.name_box{
+  position: absolute;
+  bottom: 10%;
+  left: 50%;
+  transform: translate(-45%, -53%);
+  
+  text-align: center;
+  font-size: 46px;
+  line-height: 1;
+}
