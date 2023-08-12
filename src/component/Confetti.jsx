@@ -31,7 +31,7 @@ useEffect(() => {
         <ReactConfetti
             width={winndowDimension.width}
             height={winndowDimension.height}
-            numberOfPieces={300}
+            numberOfPieces={150}
             recycle={true} // This can affect duration
             gravity={0.085}
             wind={.01}
