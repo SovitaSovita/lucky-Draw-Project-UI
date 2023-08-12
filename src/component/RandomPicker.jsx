@@ -81,9 +81,6 @@ function RandomPicker() {
         insert_winner(formWinnerInfo).then(() => {
           get_list().then((res) => {
             setItems(res.data.payload)
-            setTimeout(()=>{
-              setIsWinner(false)
-            }, duration)
             stop();
           })
 
@@ -129,7 +126,7 @@ function RandomPicker() {
         <div className="main_draw_box z-10 mb-32">
           <img src={moto} alt="" className="object-cover w-full h-full" />
 
-          <div className="name_box font-bold line-clamp-1">
+          <div className="name_box font-bold line-clamp-1 pb-1.5">
             {isWinner ? winnerName : choiceContent}
           </div>
         </div>
