@@ -81,9 +81,6 @@ function RandomPicker() {
         insert_winner(formWinnerInfo).then(() => {
           get_list().then((res) => {
             setItems(res.data.payload)
-            setTimeout(()=>{
-              setIsWinner(false)
-            }, duration)
             stop();
           })
 
