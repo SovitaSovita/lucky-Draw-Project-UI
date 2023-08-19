@@ -3,7 +3,7 @@ import { instance } from "../InstanceHeader"
 
 export const get_list = async () => {
     try {
-        const response = await API_HEADER.get(`/api/v1/info/getting-customer-information`)
+        const response = await instance.get(`/api/v1/info/getting-customer-information`)
         return response
     }
     catch (e) {

@@ -14,6 +14,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ErrorOutlineOutlinedIcon from "@mui/icons-material/ErrorOutlineOutlined";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import { loginAuth } from "../redux/slice/AuthSlice";
 
 
 
@@ -39,9 +40,10 @@ export default function Login() {
     dispatch(setLoading(true));
     loginService(user).then((r) => {
       console.log("DATA", r);
+      localStorage.setItem("token", r.data.payload.token);
       if (r.status === 200) {
-        localStorage.setItem("token", r.data.payload.token);
         dispatch(setLoading(false));
+        dispatch(loginAuth(true))
         navigate("/");
       } else {
         dispatch(setLoading(false));

@@ -1,8 +1,9 @@
 import { API_HEADER } from "../Constants"
+import { instance } from "../InstanceHeader"
 
 export const get_winner = async () => {
     try{
-        const response = await API_HEADER.get(`/api/v1/info/getting-all-winner-information`)
+        const response = await instance.get(`/api/v1/info/getting-all-winner-information`)
         return response
     }
     catch (e) {

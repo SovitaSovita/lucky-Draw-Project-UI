@@ -123,7 +123,7 @@ function RandomPicker() {
             <source src={soundEffect} type="audio/mpeg" />
           </audio>
         )}
-        <div className="main_draw_box z-10 mb-32">
+        <div className="main_draw_box mb-32">
           <img src={moto} alt="" className="object-cover w-full h-full" />
 
           <div className="name_box font-bold line-clamp-1 pb-1.5">
@@ -134,7 +134,7 @@ function RandomPicker() {
         {/* Button Draw */}
 
         {isRunning ? null : (
-          <div class="RandomPicker__controls rounded-xl mt-10 bg-gradient-to-t from-red-weight to-red-light p-1.5 shadow cursor-pointer z-10"
+          <div class="RandomPicker__controls rounded-xl mt-10 bg-gradient-to-t from-red-weight to-red-light p-1.5 shadow cursor-pointer"
             onClick={items.length <= 0 ? notifyError("No data") : () => { start(items) }}
           >
             <div class="flex h-full w-full items-center justify-center rounded-lg bg-white hover:bg-slate-200 back px-12 shadow border py-2 font-extrabold text-2xl">
