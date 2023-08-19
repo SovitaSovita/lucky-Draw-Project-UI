@@ -34,7 +34,11 @@ function RandomPicker() {
 
   const winner = useSelector((state) => state?.allList.winnerList)
 
-  console.log("win ", winner)
+  console.log(winner)
+
+  useEffect(() => {
+    getWinner()
+  },[])
 
   let [isOpen, setIsOpen] = useState(false)
 
@@ -90,15 +94,19 @@ function RandomPicker() {
             setItems(res.data.payload)
             stop();
           })
-          get_winner().then((res) => {
-            dispatch(setWinner(res?.data?.payload))
-          });
+          getWinner()
 
         })
       }
     }, duration);
     setPlaySound(false)
   };
+
+  const getWinner = () => {
+    get_winner().then((res) => {
+      dispatch(setWinner(res?.data?.payload))
+    });
+  }
 
   const stop = () => {
     clearInterval(interval);
@@ -164,8 +172,8 @@ function RandomPicker() {
           <ul className="p-6 bg-black-low border-2 border-red-weight">
             <li className="text-brand-red text-border text-3xl mb-2 font-bold italic">Watches Winner</li>
             {
-              winner.slice(0,5).map((items) => (
-                <li className="flex justify-between">
+              winner.slice(0, 5).map((items) => (
+                <li key={items.orderNo} className="flex justify-between">
                   <div>{items.name}</div>
                   <div>{items.phoneNumber}</div>
                 </li>
@@ -174,8 +182,8 @@ function RandomPicker() {
 
             <li className="text-brand-red text-border text-3xl mt-3 mb-2 font-bold italic">Vespa Winner</li>
             {
-              winner.slice(5,7).map((items) => (
-                <li className="flex justify-between">
+              winner.slice(5, 7).map((items) => (
+                <li key={items.orderNo} className="flex justify-between">
                   <div>{items.name}</div>
                   <div>{items.phoneNumber}</div>
                 </li>
