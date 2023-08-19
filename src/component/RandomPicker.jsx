@@ -12,6 +12,9 @@ import logo from '../assets/img/frontend/logo.png'
 import { Spinner } from "flowbite-react";
 import CongratulationPopUp from "./CongratulationPopUp";
 import Confetti from "./Confetti";
+import { get_winner } from "../redux/service/WinnerService";
+import { setWinner } from "../redux/slice/ListSlice";
+import { useDispatch } from "react-redux";
 
 
 function RandomPicker() {
@@ -27,6 +30,11 @@ function RandomPicker() {
 
   const [items, setItems] = useState([])
   const [playSound, setPlaySound] = useState(false);
+  const dispatch = useDispatch()
+
+  const winner = useSelector((state) => state?.allList.winnerList)
+
+  console.log("win ", winner)
 
   let [isOpen, setIsOpen] = useState(false)
 
@@ -74,15 +82,17 @@ function RandomPicker() {
         }
         setIsWinner(true)
         setWinnerName(choice.name)
-        // console.log(formWinnerInfo)
-        
+
         setPlaySound(true)
         // openModal()
-        insert_winner(formWinnerInfo).then(() => {
+        insert_winner(formWinnerInfo).then((res) => {
           get_list().then((res) => {
             setItems(res.data.payload)
             stop();
           })
+          get_winner().then((res) => {
+            dispatch(setWinner(res?.data?.payload))
+          });
 
         })
       }
@@ -148,6 +158,30 @@ function RandomPicker() {
           <div className="w-28">
             <img src={logo} alt="logo" className="w-full h-full object-cover" />
           </div>
+        </div>
+
+        <div className="absolute right-5 bottom-5 text-white text-lg width_winner w-[21%]">
+          <ul className="p-6 bg-black-low border-2 border-red-weight">
+            <li className="text-brand-red text-border text-3xl mb-2 font-bold italic">Watches Winner</li>
+            {
+              winner.slice(0,5).map((items) => (
+                <li className="flex justify-between">
+                  <div>{items.name}</div>
+                  <div>{items.phoneNumber}</div>
+                </li>
+              ))
+            }
+
+            <li className="text-brand-red text-border text-3xl mt-3 mb-2 font-bold italic">Vespa Winner</li>
+            {
+              winner.slice(5,7).map((items) => (
+                <li className="flex justify-between">
+                  <div>{items.name}</div>
+                  <div>{items.phoneNumber}</div>
+                </li>
+              ))
+            }
+          </ul>
         </div>
       </div>
 

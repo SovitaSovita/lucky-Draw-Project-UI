@@ -81,3 +81,13 @@ html {
   font-size: 46px;
   line-height: 1;
 }
+
+.text-border {
+  text-shadow: -0.3px 0.3px 0.2px yellow;
+}
+
+@media (max-width: 1280px) {
+  .width_winner{
+    width: 25%;
+  }
+}
