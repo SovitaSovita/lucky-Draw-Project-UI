@@ -3,7 +3,7 @@ import React from 'react'
 export default function WinnerCard({items, order}) {
 
     return (
-        <li className="mb-10 ml-10">
+        <li className="mb-10 ml-10 mt-12">
             {/* count winner */}
             <span className="absolute flex items-center justify-center font-bold w-10 h-10 bg-blue-300 text-blue-800 rounded-full -left-5 ring-4 ring-white">
                 {order}

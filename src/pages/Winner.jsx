@@ -5,7 +5,10 @@ import { get_winner, reset_winner } from "../redux/service/WinnerService";
 import { notifySuccess } from "../redux/Constants";
 import noData from '../assets/img/undraw_No_data_re_kwbl.png'
 import { Spinner } from "flowbite-react";
-import { Dialog, Transition } from "@headlessui/react";
+import { Dialog, Switch, Transition } from "@headlessui/react";
+import { setEnabled } from "../redux/slice/SwitchSlice";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 export default function Winner() {
   const [winnerList, setWinnerList] = useState([]);
@@ -38,22 +41,65 @@ export default function Winner() {
     setIsOpen(true)
   }
 
+  const dispatch = useDispatch()
+
+  const enabled = useSelector((state) => state.switch.enabled);
+
+  // Load initial state from localStorage
+  useEffect(() => {
+    const storedEnabled = localStorage.getItem('enabled');
+    if (storedEnabled !== null) {
+      dispatch(setEnabled(storedEnabled === 'true'));
+    }
+  }, [dispatch]);
+
+  const handleEnabledChange = () => {
+    const newEnabled = !enabled;
+
+    // Update state in Redux store
+    dispatch(setEnabled(newEnabled));
+
+    // Update localStorage
+    localStorage.setItem('enabled', newEnabled.toString());
+  };
+
   return (
     <>
       <div className="p-6 pl-3 sm:ml-64">
         <div className="p-4 border-2 border-gray-200 min-h-screen border-dashed rounded-lg ">
           <Navbar />
+
+
+          <div className="flex justify-between bg-white py-2 px-4 rounded-lg w-1/4">
+            <span>Default Winner (7th)</span>
+            <Switch
+              checked={enabled}
+              onChange={handleEnabledChange}
+              className={`${enabled ? 'bg-blue-600' : 'bg-gray-300'
+                } relative inline-flex h-6 w-11 items-center rounded-full`}
+            >
+              <span className="sr-only">Enable notifications</span>
+              <span
+                className={`${enabled ? 'translate-x-6' : 'translate-x-1'
+                  } inline-block h-4 w-4 transform rounded-full bg-white transition`}
+              />
+            </Switch>
+          </div>
+
           {/* winner */}
           <div className="flex justify-end">
             {
               winnerList?.length <= 0 ? (null) : (
-                <button
-                  type="button"
-                  onClick={openModal}
-                  className="rounded-md bg-red-600 mr-4 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
-                >
-                  Reset Winners
-                </button>
+                <div className="">
+                  <button
+                    type="button"
+                    onClick={openModal}
+                    className="rounded-md bg-red-600 mr-4 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+                  >
+                    Reset Winners
+                  </button>
+                </div>
+
               )
             }
             <Transition appear show={isOpen} as={Fragment}>

@@ -34,6 +34,12 @@ module.exports = {
         // 'hero-front': "url('./assets/img/background.jpg')",
         'hero-front': "url('./assets/img/bg-done.jpg')",
         'hero-star': "url('./assets/img/star.png')",
+      },
+      backgroundPosition: {
+        bottom: 'bottom',
+        'bottom-4': 'center bottom 3rem',
+        top: 'top',
+        'top-4': 'center top 1rem',
       }
     },
   },
