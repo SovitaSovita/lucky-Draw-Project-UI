@@ -6,8 +6,10 @@ import ChecklistOutlinedIcon from "@mui/icons-material/ChecklistOutlined";
 import EmojiEventsOutlinedIcon from "@mui/icons-material/EmojiEventsOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import ExitToAppOutlinedIcon from '@mui/icons-material/ExitToAppOutlined';
+import PolylineOutlinedIcon from '@mui/icons-material/PolylineOutlined';
+
+
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { get_winner } from "../redux/service/WinnerService";
 
 export default function SideBar() {
   const navigate = useNavigate()
@@ -93,6 +95,18 @@ export default function SideBar() {
                   >
                     <EmojiEventsOutlinedIcon className="mr-2" />
                     <span>Winner</span>
+                  </li>
+                </Link>
+                <Link to={"/default"}>
+                  <li
+                    className={
+                      currentPath == "/default"
+                        ? "flex items-center bg-brand-red hover:bg-red-700 text-white rounded-lg px-4 py-3 mb-1 transition-all"
+                        : "flex items-center rounded-lg px-4 py-3 mb-1 hover:bg-white-smoke transition-all"
+                    }
+                  >
+                    <PolylineOutlinedIcon className="mr-2" />
+                    <span>Default Winner</span>
                   </li>
                 </Link>
                 <Link to={"/account"}>

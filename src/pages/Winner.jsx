@@ -41,50 +41,11 @@ export default function Winner() {
     setIsOpen(true)
   }
 
-  const dispatch = useDispatch()
-
-  const enabled = useSelector((state) => state.switch.enabled);
-
-  // Load initial state from localStorage
-  useEffect(() => {
-    const storedEnabled = localStorage.getItem('enabled');
-    if (storedEnabled !== null) {
-      dispatch(setEnabled(storedEnabled === 'true'));
-    }
-  }, [dispatch]);
-
-  const handleEnabledChange = () => {
-    const newEnabled = !enabled;
-
-    // Update state in Redux store
-    dispatch(setEnabled(newEnabled));
-
-    // Update localStorage
-    localStorage.setItem('enabled', newEnabled.toString());
-  };
-
   return (
     <>
       <div className="p-6 pl-3 sm:ml-64">
         <div className="p-4 border-2 border-gray-200 min-h-screen border-dashed rounded-lg ">
           <Navbar />
-
-
-          <div className="flex justify-between bg-white py-2 px-4 rounded-lg w-1/4">
-            <span>Default Winner (7th)</span>
-            <Switch
-              checked={enabled}
-              onChange={handleEnabledChange}
-              className={`${enabled ? 'bg-blue-600' : 'bg-gray-300'
-                } relative inline-flex h-6 w-11 items-center rounded-full`}
-            >
-              <span className="sr-only">Enable notifications</span>
-              <span
-                className={`${enabled ? 'translate-x-6' : 'translate-x-1'
-                  } inline-block h-4 w-4 transform rounded-full bg-white transition`}
-              />
-            </Switch>
-          </div>
 
           {/* winner */}
           <div className="flex justify-end">

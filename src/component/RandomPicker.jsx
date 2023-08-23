@@ -31,6 +31,7 @@ function RandomPicker() {
   const duration = 5500;
   let interval = null;
   let intervalNum = null;
+  let fakeAtIndex = 6;
 
   const [items, setItems] = useState([])
   const [playSound, setPlaySound] = useState(false);
@@ -39,12 +40,15 @@ function RandomPicker() {
   //use for set disable or enable fake winner
   const enabled = localStorage.getItem('enabled');
 
+  const get_Winner_from_storage = localStorage.getItem('winner');
+  console.log(get_Winner_from_storage)
+  const fake = JSON.parse(get_Winner_from_storage)
+
   let fakeWinner = {
-    dateOfOrder: "2023-08-19T09:48:51.771+00:00",
-    randomCustomer: "fakeWinner",
-    no: 434,
-    orderNo: "100000",
-    phoneNumber: "000343543",
+    dateOfOrder: fake?.orderDate,
+    randomCustomer: fake?.name,
+    orderNo: fake?.orderNo,
+    phoneNumber: fake?.phoneNumber,
   }
 
   const winner = useSelector((state) => state?.allList.winnerList)
@@ -92,10 +96,9 @@ function RandomPicker() {
         }
         setIsWinner(true)
 
-        if (winner?.length == 6 && JSON.parse(enabled)) {
-          console.log("fake aa")
-          setWinnerName(fakeWinner.randomCustomer)
-          setWinnerNumber(fakeWinner.phoneNumber)
+        if (winner?.length == fakeAtIndex && JSON.parse(enabled) && fake !== null) {
+          setWinnerName(fakeWinner?.randomCustomer)
+          setWinnerNumber(fakeWinner?.phoneNumber)
 
           insert_winner(fakeWinner).then((res) => {
             get_list().then((res) => {

@@ -196,7 +196,7 @@ export default function ChangePassword() {
                 <Button
                   type="button"
                   onClick={onSubmitPassword} variant="contained" endIcon={<SaveAsOutlinedIcon />}>
-                  Send
+                  Save
                 </Button>
               </div>
             </Form>
