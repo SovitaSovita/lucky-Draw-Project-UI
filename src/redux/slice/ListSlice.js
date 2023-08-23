@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit"
 
 const initialState = {
     listData: [],
+    winnerList: []
 }
 
 export const ListSlice = createSlice({
@@ -11,9 +12,13 @@ export const ListSlice = createSlice({
         setListData : (state, action) => {
         // console.log("action.payload", action.payload)
            state.listData = action.payload
+        },
+        setWinner : (state, action) => {
+        // console.log("action.payload", action.payload)
+           state.winnerList = action.payload
         }
     }
 })
 
-export const {setListData} = ListSlice.actions
+export const {setListData, setWinner} = ListSlice.actions
 export default ListSlice.reducer

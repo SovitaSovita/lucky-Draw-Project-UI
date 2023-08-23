@@ -13,6 +13,7 @@ import Protected from './redux/service/Protected';
 import { get_list } from './redux/service/TableListService';
 import { useDispatch } from 'react-redux';
 import { loginAuth } from './redux/slice/AuthSlice';
+import DefaultWinner from './pages/DefaultWinner';
 
 function App() {
   const dispatch = useDispatch()
@@ -34,6 +35,7 @@ function App() {
           <Route path='' element={<DashboardPage />} />
           <Route path='manage' element={<ManageListPage />} />
           <Route path='winner' element={<Winner />} />
+          <Route path='default' element={<DefaultWinner />} />
           <Route path='account' element={<AccountPage />} />
         </Route>
 

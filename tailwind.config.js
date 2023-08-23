@@ -14,6 +14,7 @@ module.exports = {
         'smoke-black': '#393940',
         'gray-hover': '#56565a',
         'white-smoke': '#f0f2f5',
+        'black-low': 'rgb(0,0,0,0.3)',
       },
       screens: {
         'xl': '1280px',
@@ -26,10 +27,19 @@ module.exports = {
         'roboto': ['Roboto'],
         'poppin': ['Poppins'],
       },
+      textShadow: {
+        '2-2': '2px 2px 0 rgba(0, 0, 0, 0.5)',
+      },
       backgroundImage: {
         // 'hero-front': "url('./assets/img/background.jpg')",
         'hero-front': "url('./assets/img/bg-done.jpg')",
         'hero-star': "url('./assets/img/star.png')",
+      },
+      backgroundPosition: {
+        bottom: 'bottom',
+        'bottom-4': 'center bottom 3rem',
+        top: 'top',
+        'top-4': 'center top 1rem',
       }
     },
   },

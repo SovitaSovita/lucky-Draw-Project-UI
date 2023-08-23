@@ -40,7 +40,7 @@ export default function Login() {
     dispatch(setLoading(true));
     loginService(user).then((r) => {
       console.log("DATA", r);
-      localStorage.setItem("token", r.data.payload.token);
+      localStorage.setItem("token", r.data?.payload?.token);
       if (r.status === 200) {
         dispatch(setLoading(false));
         dispatch(loginAuth(true))

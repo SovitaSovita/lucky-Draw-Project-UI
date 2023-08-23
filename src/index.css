@@ -36,12 +36,11 @@ html {
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 100vh;
 	margin: 0;
 	padding: 0;
-	min-height: 100vh;  
   background-color: #bd0202;
 }
-
 /* @media only screen and (max-width: 992px){
   .main-font-end{
     width: 800px;
@@ -80,4 +79,14 @@ html {
   text-align: center;
   font-size: 46px;
   line-height: 1;
+}
+
+.text-border {
+  text-shadow: -0.3px 0.3px 0.2px yellow;
+}
+
+@media (max-width: 1280px) {
+  .width_winner{
+    width: 25%;
+  }
 }

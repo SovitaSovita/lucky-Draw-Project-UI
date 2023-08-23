@@ -5,7 +5,10 @@ import { get_winner, reset_winner } from "../redux/service/WinnerService";
 import { notifySuccess } from "../redux/Constants";
 import noData from '../assets/img/undraw_No_data_re_kwbl.png'
 import { Spinner } from "flowbite-react";
-import { Dialog, Transition } from "@headlessui/react";
+import { Dialog, Switch, Transition } from "@headlessui/react";
+import { setEnabled } from "../redux/slice/SwitchSlice";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 export default function Winner() {
   const [winnerList, setWinnerList] = useState([]);
@@ -43,17 +46,21 @@ export default function Winner() {
       <div className="p-6 pl-3 sm:ml-64">
         <div className="p-4 border-2 border-gray-200 min-h-screen border-dashed rounded-lg ">
           <Navbar />
+
           {/* winner */}
           <div className="flex justify-end">
             {
               winnerList?.length <= 0 ? (null) : (
-                <button
-                  type="button"
-                  onClick={openModal}
-                  className="rounded-md bg-red-600 mr-4 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
-                >
-                  Reset Winners
-                </button>
+                <div className="">
+                  <button
+                    type="button"
+                    onClick={openModal}
+                    className="rounded-md bg-red-600 mr-4 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+                  >
+                    Reset Winners
+                  </button>
+                </div>
+
               )
             }
             <Transition appear show={isOpen} as={Fragment}>
