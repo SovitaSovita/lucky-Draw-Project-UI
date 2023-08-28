@@ -1,19 +1,19 @@
 import React, { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
-import { get_list, insert_winner } from "../redux/service/TableListService";
+import { get_fake_winner, get_list, insert_winner } from "../redux/service/TableListService";
 import { notifyError } from "../redux/Constants";
 
 import soundEffect from '../assets/sound/goodresult-82807.mp3'
 import moto from '../assets/img/motos.png'
-import numberPhone from '../assets/img/NumberPhone.png'
 import logo from '../assets/img/frontend/logo.png'
 
 
 import Confetti from "./Confetti";
 import { get_winner } from "../redux/service/WinnerService";
-import { setWinner } from "../redux/slice/ListSlice";
+import { setFake, setWinner } from "../redux/slice/ListSlice";
 import { useDispatch } from "react-redux";
+import Spinners from "./Spinners";
 
 
 function RandomPicker() {
@@ -25,8 +25,6 @@ function RandomPicker() {
   const [winnerNumber, setWinnerNumber] = useState("")
 
   const [isWinner, setIsWinner] = useState(false)
-  const [isFullScreen, setIsFullScreen] = useState(false);
-  const [storeWinner, setStoreWinner] = useState([])
   const intervalDuration = 25;
   const duration = 5500;
   let interval = null;
@@ -37,18 +35,13 @@ function RandomPicker() {
   const [playSound, setPlaySound] = useState(false);
   const dispatch = useDispatch()
 
-  //use for set disable or enable fake winner
-  const enabled = localStorage.getItem('enabled');
+  const fakeWinner = useSelector((state) => state.allList.fakeWinner);
 
-  const get_Winner_from_storage = localStorage.getItem('winner');
-  console.log(get_Winner_from_storage)
-  const fake = JSON.parse(get_Winner_from_storage)
-
-  let fakeWinner = {
-    dateOfOrder: fake?.orderDate,
-    randomCustomer: fake?.name,
-    orderNo: fake?.orderNo,
-    phoneNumber: fake?.phoneNumber,
+  let fakeWinnerConvert = {
+    dateOfOrder: fakeWinner?.dateOfOrder,
+    randomCustomer: fakeWinner?.name,
+    orderNo: fakeWinner?.orderNo,
+    phoneNumber: fakeWinner?.phoneNumber,
   }
 
   const winner = useSelector((state) => state?.allList.winnerList)
@@ -60,8 +53,8 @@ function RandomPicker() {
   useEffect(() => {
     get_list()
       .then((res) => {
-        if (res.data && res.data.payload) {
-          const nameList = res.data.payload.map((data) => {
+        if (res?.data && res.data?.payload) {
+          const nameList = res.data?.payload.map((data) => {
             return data;
           });
           setItems(nameList);
@@ -74,6 +67,7 @@ function RandomPicker() {
 
 
   const isRunningRef = useRef(false);
+  const [isLoading, setIsLoading] = useState(false)
 
   const start = (newItems) => {
 
@@ -96,30 +90,28 @@ function RandomPicker() {
         }
         setIsWinner(true)
 
-        if (winner?.length == fakeAtIndex && JSON.parse(enabled) && fake !== null) {
-          setWinnerName(fakeWinner?.randomCustomer)
-          setWinnerNumber(fakeWinner?.phoneNumber)
+        if (winner?.length == fakeAtIndex && fakeWinner !== null) {
+          setWinnerName(fakeWinnerConvert?.randomCustomer)
+          setWinnerNumber(fakeWinnerConvert?.phoneNumber)
 
-          insert_winner(fakeWinner).then((res) => {
+          insert_winner(fakeWinnerConvert).then((res) => {
             get_list().then((res) => {
-              setItems(res.data.payload)
+              setItems(res.data?.payload)
               stop();
             })
             getWinner()
           })
         }
         else {
-          console.log("real aa")
           setWinnerName(choice.name)
           setWinnerNumber(choice.phoneNumber)
 
           insert_winner(formWinnerInfo).then((res) => {
             get_list().then((res) => {
-              setItems(res.data.payload)
+              setItems(res.data?.payload)
               stop();
             })
             getWinner()
-
           })
         }
 
@@ -131,8 +123,10 @@ function RandomPicker() {
   };
 
   const getWinner = () => {
+    setIsLoading(true)
     get_winner().then((res) => {
       dispatch(setWinner(res?.data?.payload))
+      setIsLoading(false)
     });
   }
 
@@ -174,29 +168,26 @@ function RandomPicker() {
             <source src={soundEffect} type="audio/mpeg" />
           </audio>
         )}
-        <div className="main_draw_box mb-56">
-          <img src={moto} alt="" className="object-cover w-full h-full" />
 
-          <div className="name_box font-bold line-clamp-1 pb-1.5">
+        <div className="main_draw_box">
+          <img src={moto} alt="" className="object-cover w-full h-full" />
+        </div>
+
+        <div className="flex justify-between items-center w-[480px] fixed">
+          <div className="font-bold text-4xl line-clamp-1">
             {isWinner ? winnerName : choiceContent}
           </div>
 
-          <div className="flex items-center justify-center">
-            <div className="w-1/3 relative">
-              <img src={numberPhone} alt="np" className="w-full absolute" />
-              <p className="absolute left-0 right-0 top-4 flex justify-center items-center h-full font-bold">
-                {isWinner ? winnerNumber : choiceContentNum}
-              </p>
-            </div>
+          <div className="font-bold text-2xl">
+            {isWinner ? winnerNumber : choiceContentNum}
           </div>
-
         </div>
 
         {/* Button Draw */}
 
         {isRunning ? null : (
           <div class="RandomPicker__controls rounded-xl mt-10 bg-gradient-to-t from-red-weight to-red-light p-1.5 shadow cursor-pointer"
-            onClick={items.length <= 0 ? notifyError("No data") : () => { start(items) }}
+            onClick={items.length <= 0 ? null : () => { start(items) }}
           >
             <div class="flex h-full w-full items-center justify-center rounded-lg bg-white hover:bg-slate-200 back px-12 shadow border py-2 font-extrabold text-2xl">
               Draw
@@ -222,7 +213,12 @@ function RandomPicker() {
                 </li>
               ))
             }
-
+            {isLoading && winner.length < 5 && (
+              <li className="flex justify-between font-bold">
+                <Spinners />
+                <Spinners />
+              </li>
+            )}
             <li className="text-brand-red text-border text-3xl mt-3 mb-2 font-bold italic">Vespa Winner</li>
             {
               winner?.slice(5, 7).map((items, index) => (
@@ -232,6 +228,12 @@ function RandomPicker() {
                 </li>
               ))
             }
+            {isLoading && (winner.length >= 5 ) && (
+              <li className="flex justify-between font-bold">
+                <Spinners />
+                <Spinners />
+              </li>
+            )}
           </ul>
         </div>
       </div>
