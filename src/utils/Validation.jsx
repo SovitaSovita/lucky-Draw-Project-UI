@@ -10,7 +10,7 @@ export const SignupSchema = Yup.object().shape({
 
 export const WinnerSchema = Yup.object().shape({
   name: Yup.string().required('Required').matches(/^\s*\S+(?:\s+\S+)*\s*$/, 'Name cannot be empty or consist of only whitespace'),
-  phoneNumber: Yup.string().required('Required').matches(/^\d+$/, 'Phone number must contain only numbers'),
+  phoneNumber: Yup.string().required('Required').matches(/^\d+(?:\s+\d+)*$/, 'Phone number must contain only numbers'),
   orderNo: Yup.string().required('Required').matches(/^\d+$/, 'Order number must contain only numbers'),
   dateOfOrder: Yup.string().required('Required'),
 });

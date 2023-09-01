@@ -62,7 +62,7 @@ const TableList = () => {
     headers: { "Access-Control-Allow-Headers": "Content-Type" }
   }
   const columns = [
-    { title: 'No', field: 'No', editable: 'never', render: rowData => rowData.tableData.id + 1 },
+    { title: 'No', field: 'no', editable: 'never'},
     { title: 'Order Date', field: 'dateOfOrder', type: 'date' },
     { title: 'Name', field: 'name' },
     { title: 'Telephone', field: 'phoneNumber' },
@@ -108,6 +108,7 @@ const TableList = () => {
 
     upload_excel(formData).then((response) => {
       Table()
+      console.log(response)
       notifySuccess(response?.data?.message);
     })
       .catch((error) => {

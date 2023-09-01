@@ -154,8 +154,8 @@ function RandomPicker() {
     setCurrentChoiceNum(pickChoice().phoneNumber);
   };
 
-  const choiceContent = currentChoice?.trim().length > 0 ? currentChoice : "?";
-  const choiceContentNum = currentChoiceNum?.trim().length > 0 ? currentChoiceNum : "?";
+  const choiceContent = currentChoice?.trim().length > 0 ? currentChoice : " ";
+  const choiceContentNum = currentChoiceNum?.trim().length > 0 ? currentChoiceNum : " ";
 
   return (
     <>
@@ -207,7 +207,7 @@ function RandomPicker() {
             <li className="text-brand-red text-border text-3xl mb-2 font-bold italic">Watches Winner</li>
             {
               winner?.slice(0, 5).map((items, index) => (
-                <li key={items.orderNo} className="flex justify-between font-bold">
+                <li key={items.no} className="flex justify-between font-bold">
                   <div>{index + 1}. {items.name}</div>
                   <div>{items.phoneNumber}</div>
                 </li>
@@ -222,13 +222,13 @@ function RandomPicker() {
             <li className="text-brand-red text-border text-3xl mt-3 mb-2 font-bold italic">Vespa Winner</li>
             {
               winner?.slice(5, 7).map((items, index) => (
-                <li key={items.orderNo} className="flex justify-between font-bold">
+                <li key={items.no} className="flex justify-between font-bold">
                   <div>{index + 6}. {items.name}</div>
                   <div>{items.phoneNumber}</div>
                 </li>
               ))
             }
-            {isLoading && (winner.length >= 5 ) && (
+            {isLoading && (winner.length >= 5  && winner.length <= 6) && (
               <li className="flex justify-between font-bold">
                 <Spinners />
                 <Spinners />
