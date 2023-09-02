@@ -61,7 +61,10 @@ html {
 
 
 .main_draw_box{
-  position: relative;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-58%, -79.5%);
   width: 850px;
   height: auto;
 }
@@ -70,19 +73,9 @@ html {
     padding-top: 120px;
   }
 } */
-.name_box{
-  position: absolute;
-  bottom: 10%;
-  left: 50%;
-  transform: translate(-45%, -45%);
-  
-  text-align: center;
-  font-size: 46px;
-  line-height: 1;
-}
 
 .text-border {
-  text-shadow: -0.3px 0.3px 0.2px yellow;
+  text-shadow: -0.9px -0.4px 0.2px yellow;
 }
 
 @media (max-width: 1280px) {

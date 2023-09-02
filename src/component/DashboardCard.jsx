@@ -76,9 +76,9 @@ export default function DashboardCard() {
             <Link
                 to="/default"
             >
-                <div className="rounded-xl bg-gradient-to-r from-gray-300 to-gray-400 shadow-md border">
+                <div className="rounded-xl bg-gradient-to-r from-gray-400 to-gray-300 shadow-md border">
                     <div className="flex justify-between items-center">
-                        <div className='py-4 px-6 text-slate-500'>
+                        <div className='py-4 px-6 text-white'>
                             <h2 className="card-title uppercase">Setup Default</h2>
                             <span>..................</span>
                         </div>

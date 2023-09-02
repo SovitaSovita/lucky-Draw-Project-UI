@@ -2,7 +2,8 @@ import { createSlice } from "@reduxjs/toolkit"
 
 const initialState = {
     listData: [],
-    winnerList: []
+    winnerList: [],
+    fakeWinner: {},
 }
 
 export const ListSlice = createSlice({
@@ -16,9 +17,12 @@ export const ListSlice = createSlice({
         setWinner : (state, action) => {
         // console.log("action.payload", action.payload)
            state.winnerList = action.payload
+        },
+        setFake : (state, action) => {
+            state.fakeWinner = action.payload
         }
-    }
+    },
 })
 
-export const {setListData, setWinner} = ListSlice.actions
+export const {setListData, setWinner, setFake} = ListSlice.actions
 export default ListSlice.reducer

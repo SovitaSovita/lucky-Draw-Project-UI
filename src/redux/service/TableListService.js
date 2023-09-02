@@ -1,4 +1,4 @@
-import { API, API_HEADER } from "../Constants"
+import { API_HEADER } from "../Constants"
 import { instance } from "../InstanceHeader"
 
 export const get_list = async () => {
@@ -64,6 +64,36 @@ export const reset_customer = async () => {
         return response
     }
     catch (e){
+        console.log(e)
+    }
+}
+
+export const get_fake_winner = async () => {
+    try {
+        const response = await API_HEADER.get(`/api/v1/info/getFakeWinner`)
+        return response
+    }
+    catch (e) {
+        console.log(e)
+    }
+}
+
+export const insert_fake_winner = async (fake) => {
+    try {
+        const response = await API_HEADER.post(`/api/v1/info/FakeWinner`, fake)
+        return response
+    }
+    catch (e) {
+        console.log(e)
+    }
+}
+
+export const delete_fake_winner = async () => {
+    try {
+        const response = await API_HEADER.delete(`/api/v1/info/reset-fake-winner`)
+        return response
+    }
+    catch (e) {
         console.log(e)
     }
 }

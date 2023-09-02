@@ -14,7 +14,7 @@ module.exports = {
         'smoke-black': '#393940',
         'gray-hover': '#56565a',
         'white-smoke': '#f0f2f5',
-        'black-low': 'rgb(0,0,0,0.3)',
+        'black-low': 'rgb(0,0,0,0.4)',
       },
       screens: {
         'xl': '1280px',

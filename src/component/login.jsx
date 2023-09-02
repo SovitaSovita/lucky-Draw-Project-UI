@@ -39,7 +39,6 @@ export default function Login() {
   const handleLogin = (values, { setFieldError }) => {
     dispatch(setLoading(true));
     loginService(user).then((r) => {
-      console.log("DATA", r);
       localStorage.setItem("token", r.data?.payload?.token);
       if (r.status === 200) {
         dispatch(setLoading(false));

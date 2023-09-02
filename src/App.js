@@ -10,10 +10,11 @@ import Winner from './pages/Winner';
 import AccountPage from './pages/AccountPage';
 import Login from './component/login';
 import Protected from './redux/service/Protected';
-import { get_list } from './redux/service/TableListService';
+import { get_fake_winner, get_list } from './redux/service/TableListService';
 import { useDispatch } from 'react-redux';
 import { loginAuth } from './redux/slice/AuthSlice';
 import DefaultWinner from './pages/DefaultWinner';
+import { setFake } from './redux/slice/ListSlice';
 
 function App() {
   const dispatch = useDispatch()
@@ -26,6 +27,10 @@ function App() {
         dispatch(loginAuth(false));
       }
     });
+
+    get_fake_winner().then((res)=>{
+      dispatch(setFake(res?.data?.payload))
+    })
   }, []);
 
   return (
